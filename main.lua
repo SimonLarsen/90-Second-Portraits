@@ -1,3 +1,4 @@
+require("mymath")
 class = require("middleclass.middleclass")
 gamestate = require("hump.gamestate")
 Resources = require("Resources")
@@ -12,6 +13,7 @@ SCALE = 3
 
 function love.load()
 	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
+	love.mouse.setVisible(false)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 
 	gamestate.registerEvents()
@@ -40,15 +42,10 @@ function love.run()
 	end
 
 	if love.load then love.load(arg) end
-
-	-- We don't want the first frame's dt to include time taken by love.load.
 	if love.timer then love.timer.step() end
-
 	local dt = 0
 
-	-- Main loop time.
 	while true do
-		-- Process events.
 		if love.event then
 			love.event.pump()
 			for e,a,b,c,d in love.event.poll() do
@@ -64,14 +61,12 @@ function love.run()
 			end
 		end
 
-		-- Update dt, as we'll be passing it to update
 		if love.timer then
 			love.timer.step()
 			dt = love.timer.getDelta()
 		end
 
-		-- Call update and draw
-		if love.update then love.update(dt) end -- will pass 0 if love.timer is disabled
+		if love.update then love.update(dt) end
 
 		Mouse.static:clear()
 

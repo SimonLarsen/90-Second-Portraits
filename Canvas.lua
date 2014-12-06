@@ -13,6 +13,7 @@ function Canvas:initialize(x, y, w, h)
 	self._width, self._height = w, h
 
 	self._tool = 2
+	self._color = { 224, 24, 24, 255 }
 
 	self._canvas = love.graphics.newCanvas(self._width, self._height)
 	self._canvas:clear(237, 217, 122, 255)
@@ -32,22 +33,41 @@ end
 
 function Canvas:update(dt)
 	local mx, my = Mouse.static:getPosition()
-	mx = math.max(0, math.min(mx - self.x, self._width))
-	my = math.max(0, math.min(my - self.y, self._height))
+	mx = mx - self.x
+	my = my - self.y
+	local spacing = Canvas.static.BRUSH[self._tool].spacing
+	local size = Canvas.static.BRUSH[self._tool].size
 
 	love.graphics.setCanvas(self._canvas)
+	love.graphics.setColor(self._color)
+
 	if Mouse.static:wasPressed("l") then
-		local brush_index = love.math.random(0, 3)
-		love.graphics.draw(self._splats[self._tool], self._splat_quads[self._tool], mx, my)
-		self._lastx = mx
-		self._lasty = my
+		if self._tool == 1 or self._tool == 2 then
+			local brush_index = love.math.random(0, 3)
+			love.graphics.draw(self._splats[self._tool], self._splat_quads[self._tool], mx, my, 0, 1, 1, size/2, size/2)
+			self._lastx = mx
+			self._lasty = my
+		elseif self._tool == 3 then
+			self._lastx = mx
+			self._lasty = my
+		end
 	end
 
-	if Mouse.static:isDown("l") then
-		local spacing = Canvas.static.BRUSH[self._tool].spacing
-		local size = Canvas.static.BRUSH[self._tool].size
-		local xdist = mx - self._lastx
-		local ydist = my - self._lasty
+	if Mouse.static:wasReleased("l") and self._tool == 3 then
+		local radius = my - self._lasty
+		for i=1,10 do
+			local angle = love.math.random()*2*math.pi
+			local offset = love.math.random()*radius
+			local size = love.math.random() * radius/2
+			local x = self._lastx + math.cos(angle) * offset
+			local y = self._lasty + math.sin(angle) * offset
+			love.graphics.circle("fill", x, y, size, 32)
+		end
+	end
+
+	if Mouse.static:isDown("l") and (self._tool == 1 or self._tool == 2) then
+		local xdist = math.cap(mx, 0, self._width) - self._lastx
+		local ydist = math.cap(my, 0, self._height) - self._lasty
 		local fsteps = math.sqrt(xdist^2 + ydist^2) / spacing
 		local steps = math.floor(fsteps)
 		if steps > 0 then
@@ -60,6 +80,8 @@ function Canvas:update(dt)
 			end
 		end
 	end
+
+	love.graphics.setColor(255, 255, 255, 255)
 	love.graphics.setCanvas()
 end
 
