@@ -1,4 +1,4 @@
-local Entity = require("Entity")
+local Entity = class("Entity")
 
 function Entity:initialize()
 	self.x, self.y, self.z = 0, 0, 0

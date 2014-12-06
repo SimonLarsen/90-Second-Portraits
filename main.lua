@@ -1,5 +1,9 @@
 class = require("middleclass.middleclass")
 gamestate = require("hump.gamestate")
+Resources = require("Resources")
+Mouse = require("Mouse")
+Scene = require("Scene")
+Entity = require("Entity")
 
 WIDTH = 320
 HEIGHT = 240
@@ -7,14 +11,23 @@ SCALE = 3
 
 function love.load()
 	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
+	love.graphics.setBackgroundColor(255, 255, 255)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 
 	gamestate.registerEvents()
-	gamestate.switch(require("Scene")())
+	gamestate.switch(require("GameScene")())
 end
 
 function love.gui()
 	gamestate.current():gui()
+end
+
+function love.mousepressed(x, y, button)
+	Mouse.static:mousepressed(x, y, button)
+end
+
+function love.mousereleased(x, y, button)
+	Mouse.static:mousereleased(x, y, button)
 end
 
 function love.run()
@@ -59,6 +72,8 @@ function love.run()
 
 		-- Call update and draw
 		if love.update then love.update(dt) end -- will pass 0 if love.timer is disabled
+
+		Mouse.static:clear()
 
 		if love.window and love.graphics and love.window.isCreated() then
 			love.graphics.clear()
