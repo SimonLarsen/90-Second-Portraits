@@ -4,6 +4,7 @@ Resources = require("Resources")
 Mouse = require("Mouse")
 Scene = require("Scene")
 Entity = require("Entity")
+Animation = require("Animation")
 
 WIDTH = 320
 HEIGHT = 240
@@ -11,7 +12,6 @@ SCALE = 3
 
 function love.load()
 	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
-	love.graphics.setBackgroundColor(255, 255, 255)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 
 	gamestate.registerEvents()
