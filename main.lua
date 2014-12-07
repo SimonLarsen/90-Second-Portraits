@@ -13,7 +13,7 @@ SCALE = 3
 
 function love.load()
 	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
-	love.mouse.setVisible(false)
+	--love.mouse.setVisible(false)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setLineStyle("rough")
 
