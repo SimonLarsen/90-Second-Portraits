@@ -29,12 +29,12 @@ function GameController:update(dt)
 
 	if self.customer:getState() == 2 then
 		self.time = self.time - dt
-		local barwidth = self.time / GameController.static.TIME * 151
-		self.quad_timer:setViewport(0, 0, barwidth, 12)
 		if self.time <= 0 then
 			self:next()
 		end
 	end
+	local barwidth = self.time / GameController.static.TIME * 151
+	self.quad_timer:setViewport(0, 0, barwidth, 12)
 
 	local mx, my = Mouse.static:getPosition()
 	if mx >= WIDTH-59 and my >= HEIGHT-20 then
@@ -100,6 +100,11 @@ function GameController:gui()
 	end
 
 	love.graphics.draw(self.timer_bar, self.quad_timer, 7, 9)
+	if self.time < 15 and (self.time % 0.5) < 0.25 then
+		love.graphics.setBlendMode("additive")
+		love.graphics.draw(self.timer_bar, self.quad_timer, 7, 9)
+		love.graphics.setBlendMode("alpha")
+	end
 	love.graphics.draw(self.timer, 5, 7)
 end
 
