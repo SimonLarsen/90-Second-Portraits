@@ -17,8 +17,8 @@ function Canvas:initialize(x, y, w, h)
 	self.color = { 224, 24, 24, 255 }
 
 	self.canvas = love.graphics.newCanvas(self.width, self.height)
+	self.canvas_bg = Resources.static:getImage("canvas.png")
 	self.canvas:clear(241, 232, 199)
-
 
 	self.splatter = Resources.static:getImage("splatter.png")
 	self.brush_small = Animation(Resources.static:getImage("brush_small.png"), 30, 40)
@@ -79,6 +79,7 @@ function Canvas:update(dt)
 end
 
 function Canvas:draw()
+	love.graphics.draw(self.canvas_bg, self.x, self.y)
 	love.graphics.draw(self.canvas, self.x, self.y)
 end
 
