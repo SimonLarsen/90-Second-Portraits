@@ -6,7 +6,7 @@ end
 
 function Scene:update(dt)
 	for i,v in ipairs(self.entities) do
-		if v:isEnabled() then
+		if v:isActive() then
 			v:update(dt)
 		end
 	end
@@ -20,17 +20,13 @@ end
 
 function Scene:draw()
 	for i,v in ipairs(self.entities) do
-		if v:isEnabled() then
-			v:draw()
-		end
+		v:draw()
 	end
 end
 
 function Scene:gui()
 	for i,v in ipairs(self.entities) do
-		if v:isEnabled() then
-			v:gui()
-		end
+		v:gui()
 	end
 end
 

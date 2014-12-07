@@ -1,3 +1,5 @@
+local ColorMixer = require("ColorMixer")
+
 local Palette = class("Palette", Entity)
 
 Palette.static.PAINT_POS = { {7, 7}, {34, -4}, {67, -9}, {101, -1} }
@@ -39,7 +41,10 @@ function Palette:update(dt)
 				if self.state == 1 then
 					self.canvas:setColor(self.colors[i])
 				elseif self.state == 2 then
-					self.state = 1
+					self.canvas:setActive(false)
+					self.toolbox:setActive(false)
+					self.colormixer = self.scene:addEntity(ColorMixer(i))
+					self.state = 3
 				end
 			end
 		end
@@ -47,7 +52,21 @@ function Palette:update(dt)
 		-- Mix button
 		if mx >= self.x+35 and mx <= self.x+76
 		and my >= self.y+20 and my <= self.y+41 then
-			self.state = 2
+			if self.state == 1 then
+				self.state = 2
+			elseif self.state == 3 then
+				self.state = 1
+				self.canvas:setActive(true)
+				self.toolbox:setActive(true)
+
+				if self.colormixer:getTotal() > 0 then
+					local slot = self.colormixer:getSlot()
+					self.colors[slot] = self.colormixer:getColor()
+					self.canvas:setColor(self.colors[slot])
+				end
+				self.colormixer:kill()
+				self.colormixer = nil
+			end
 		end
 	end
 end
@@ -57,7 +76,7 @@ function Palette:gui()
 	love.graphics.draw(self.image_mix, self.x+35, self.y+20)
 
 	if self.state == 2 then
-		love.graphics.setColor(0, 0, 0, 180)
+		love.graphics.setColor(0, 0, 0, 200)
 		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	end
 

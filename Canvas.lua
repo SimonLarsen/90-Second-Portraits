@@ -84,6 +84,8 @@ function Canvas:draw()
 end
 
 function Canvas:gui()
+	if self:isActive() == false then return end
+
 	local mx, my = Mouse.static:getPosition()
 	if self.tool == 1 then
 		love.graphics.draw(self.brush_small._image, self.brush_small._quads[self.brush_dir], mx, my, 0, 1, 1, 9, 2)
