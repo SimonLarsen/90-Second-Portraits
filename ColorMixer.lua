@@ -11,15 +11,11 @@ function ColorMixer:initialize(slot)
 	Entity.initialize(self)
 
 	self.slot = slot
-	self.mycolor = { 0, 0, 0 }
-	self.counts = {}
-	for i=1,#ColorMixer.static.COLORS do
-		self.counts[i] = 0
-	end
-	self.total = 0
-	self.splats = {}
+	self:reset()
 
 	self.mix_circle = Resources.static:getImage("mix_circle.png")
+	self.submit_button = Resources.static:getImage("submit.png")
+	self.reset_button = Resources.static:getImage("reset.png")
 	self.tubes = Resources.static:getImage("tubes.png")
 	self.quads_tubes = {}
 	for i=1, 8 do
@@ -60,6 +56,13 @@ function ColorMixer:update(dt)
 	for i=1, #ColorMixer.static.COLORS do
 		local x = (i % 4) * 40
 		local y = math.floor((i-1) / 4) * 64
+
+		if mx >= 99 and mx <= 131
+		and my >= 199 and my <= 231 then
+			if Mouse.static:wasPressed("l") then
+				self:reset()
+			end
+		end
 
 		if mx >= x and mx <= x+40
 		and my >= y and my <= y+64 then
@@ -109,6 +112,19 @@ function ColorMixer:gui()
 	end
 
 	love.graphics.setColor(255, 255, 255, 255)
+
+	love.graphics.draw(self.reset_button, 115, 215, 0, 1, 1, 16, 16)
+	love.graphics.draw(self.submit_button, 201, 202)
+end
+
+function ColorMixer:reset()
+	self.mycolor = { 0, 0, 0 }
+	self.counts = {}
+	for i=1,#ColorMixer.static.COLORS do
+		self.counts[i] = 0
+	end
+	self.total = 0
+	self.splats = {}
 end
 
 function ColorMixer:getSlot()
