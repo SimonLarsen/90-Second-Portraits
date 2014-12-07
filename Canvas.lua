@@ -13,12 +13,20 @@ function Canvas:initialize(x, y, w, h)
 	self.width, self.height = w, h
 
 	self.tool = 2
+	self.brush_dir = 1
 	self.color = { 224, 24, 24, 255 }
 
 	self.canvas = love.graphics.newCanvas(self.width, self.height)
 	self.canvas:clear(241, 232, 199)
 
-	self.cursor = Resources.static:getImage("brush_big.png")
+	self.brush_small = Animation(Resources.static:getImage("brush_small.png"), 30, 40)
+
+	self.brush_big = Animation(Resources.static:getImage("brush_big.png"), 40, 50)
+	self.brush_big_tips = Animation(Resources.static:getImage("brush_big_tips.png"), 40, 50)
+
+	self.bucket = Resources.static:getImage("bucket.png")
+	self.bucket_cursor = Resources.static:getImage("bucket_cursor.png")
+	self.bucket_contents = Resources.static:getImage("bucket_contents.png")
 end
 
 function Canvas:update(dt)
@@ -46,9 +54,11 @@ function Canvas:update(dt)
 		if self.tool == 1 or self.tool == 2 then
 			self.lastx = mx
 			self.lasty = my
+			self.brush_dir = 2
 		elseif self.tool == 3 then
 			self.lastx = mx
 			self.lasty = my
+			self.brush_dir = 2
 		end
 	end
 
@@ -64,14 +74,23 @@ function Canvas:update(dt)
 		end
 	end
 
-	if Mouse.static:isDown("l") and (self.tool == 1 or self.tool == 2) then
-		local size = Canvas.static.BRUSH[self.tool].size
-		love.graphics.setLineWidth(size)
-		love.graphics.line(self.lastx, self.lasty, mx, my)
-		love.graphics.circle("fill", self.lastx, self.lasty, size/2, 32)
-		love.graphics.circle("fill", mx, my, size/2, 32)
+	if Mouse.static:isDown("l") then
+		if self.tool == 1 or self.tool == 2 then
+			local size = Canvas.static.BRUSH[self.tool].size
+			love.graphics.setLineWidth(size)
+			love.graphics.line(self.lastx, self.lasty, mx, my)
+			love.graphics.circle("fill", self.lastx, self.lasty, size/2, 32)
+			love.graphics.circle("fill", mx, my, size/2, 32)
 
-		self.lastx, self.lasty = mx, my
+			if mx > self.lastx then
+				self.brush_dir = 2
+			elseif mx < self.lastx then
+				self.brush_dir = 3
+			end
+			self.lastx, self.lasty = mx, my
+		end
+	else
+		self.brush_dir = 1
 	end
 
 	love.graphics.setColor(255, 255, 255, 255)
@@ -84,7 +103,19 @@ end
 
 function Canvas:gui()
 	local mx, my = Mouse.static:getPosition()
-	love.graphics.draw(self.cursor, mx, my)
+	if self.tool == 1 then
+		love.graphics.draw(self.brush_small._image, self.brush_small._quads[self.brush_dir], mx, my, 0, 1, 1, 9, 2)
+	elseif self.tool == 2 then
+		love.graphics.draw(self.brush_big._image, self.brush_big._quads[self.brush_dir], mx, my, 0, 1, 1, 14, 3)
+		love.graphics.setColor(self.color)
+		love.graphics.draw(self.brush_big_tips._image, self.brush_big_tips._quads[self.brush_dir], mx, my, 0, 1, 1, 14, 3)
+	elseif self.tool == 3 then
+		love.graphics.draw(self.bucket_cursor, mx, my, 0, 1, 1, 8, 8)
+		love.graphics.draw(self.bucket, mx, my, 0, 1, 1, 17, -17)
+		love.graphics.setColor(self.color)
+		love.graphics.draw(self.bucket_contents, mx, my, 0, 1, 1, 17, -17)
+	end
+	love.graphics.setColor(255, 255, 255)
 end
 
 function Canvas:setColor(c)

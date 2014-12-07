@@ -5,6 +5,7 @@ function Entity:initialize(x, y, z)
 	self.y = y or 0
 	self.z = z or 0
 
+	self.enabled = true
 	self.alive = true
 end
 function Entity:update(dt)
@@ -25,6 +26,14 @@ end
 
 function Entity:isAlive()
 	return self.alive
+end
+
+function Entity:setEnabled(e)
+	self.enabled = e
+end
+
+function Entity:isEnabled()
+	return self.enabled
 end
 
 return Entity

@@ -12,33 +12,54 @@ function Palette:initialize(x, y)
 		{224, 54, 54}
 	}
 
-	self.image = Resources.static:getImage("palette.png")
+	self.state = 1
+
+	self.image_base = Resources.static:getImage("palette.png")
+	self.image_mix = Resources.static:getImage("mix_button.png")
 	self.paint = Animation(Resources.static:getImage("paint.png"), 24, 21)
+
 	self.canvas = nil
+	self.toolbox = nil
 end
 
 function Palette:update(dt)
 	local mx, my = Mouse.static:getPosition()
 
-	if self.canvas == nil then
-		self.canvas = self.scene:findOfType("Canvas")
-	end
+	if self.canvas == nil then self.canvas = self.scene:findOfType("Canvas") end
+	if self.toolbox == nil then self.toolbox = self.scene:findOfType("Toolbox") end
 
 	if Mouse.static:wasPressed("l") then
+		-- Colors
 		for i=1,4 do
 			local x = self.x + Palette.static.PAINT_POS[i][1]
 			local y = self.y + Palette.static.PAINT_POS[i][2]
 
 			if mx >= x and mx <= x + 24
 			and my >= y and my <= y + 21 then
-				self.canvas:setColor(self.colors[i])
+				if self.state == 1 then
+					self.canvas:setColor(self.colors[i])
+				elseif self.state == 2 then
+					self.state = 1
+				end
 			end
+		end
+
+		-- Mix button
+		if mx >= self.x+35 and mx <= self.x+76
+		and my >= self.y+20 and my <= self.y+41 then
+			self.state = 2
 		end
 	end
 end
 
 function Palette:gui()
-	love.graphics.draw(self.image, self.x, self.y)
+	love.graphics.draw(self.image_base, self.x, self.y)
+	love.graphics.draw(self.image_mix, self.x+35, self.y+20)
+
+	if self.state == 2 then
+		love.graphics.setColor(0, 0, 0, 180)
+		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
+	end
 
 	for i=1, 4 do
 		love.graphics.setColor(self.colors[i])

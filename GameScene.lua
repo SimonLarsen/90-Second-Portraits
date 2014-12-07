@@ -10,7 +10,7 @@ function GameScene:initialize()
 	Scene.initialize(self)
 
 	self:addEntity(Canvas(20, 28, 120, 160))
-	self:addEntity(Palette(166, 178))
+	self:addEntity(Palette(166, 182))
 	self:addEntity(Toolbox(27, 222))
 
 	self:addEntity(Sprite(18, 18, 50, Resources.static:getImage("canvas.png"), 0, 0))

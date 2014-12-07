@@ -74,16 +74,13 @@ function love.run()
 		if love.window and love.graphics and love.window.isCreated() then
 			love.graphics.clear()
 			love.graphics.origin()
-
 			love.graphics.push()
 			love.graphics.scale(SCALE, SCALE)
 
 			if love.draw then love.draw() end
-
 			if love.gui then love.gui() end
 
 			love.graphics.pop()
-
 			love.graphics.present()
 		end
 

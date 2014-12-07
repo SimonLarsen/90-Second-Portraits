@@ -4,10 +4,17 @@ function Customer:initialize(id)
 	Entity.initialize(self, WIDTH+90, 125, 20)
 
 	self.image = Resources.static:getImage("customer"..id..".png")
+	self.state = 0
 end
 
 function Customer:update(dt)
-	self.x = math.max(240, self.x - dt * 100)
+	if self.state == 0 then
+		self.x = self.x - dt * 100
+		if self.x <= 240 then
+			self.x = 240
+			self.state = 1
+		end
+	end
 end
 
 function Customer:draw()
