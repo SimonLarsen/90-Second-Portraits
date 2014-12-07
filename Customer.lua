@@ -14,8 +14,10 @@ end
 function Customer:update(dt)
 	if self.state == 0 then
 		self.x = self.x - dt * 100
+		self.y = 10 - math.abs(math.cos((240 - self.x) / 10)) * 10
 		if self.x <= 240 then
 			self.x = 240
+			self.y = 0
 			self.state = 1
 		end
 	end

@@ -1,7 +1,7 @@
 local Canvas = class("Canvas", Entity)
 
 Canvas.static.BRUSH = {
-	{ size = 4, spacing = 2 },
+	{ size = 3, spacing = 2 },
 	{ size = 8, spacing = 3 },
 	{ size = 0, spacing = 0 }
 }
@@ -49,7 +49,6 @@ function Canvas:update(dt)
 		elseif self.tool == 3 then
 			self.lastx = mx
 			self.lasty = my
-			print(mx, my)
 			self.brush_dir = 2
 		end
 	end
