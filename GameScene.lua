@@ -11,7 +11,7 @@ local GameScene = class("GameScene", Scene)
 function GameScene:initialize()
 	Scene.initialize(self)
 
-	self:addEntity(Canvas(120, 160))
+	self:addEntity(Canvas())
 	self:addEntity(Palette(166, 182))
 	self:addEntity(Toolbox(27, 222))
 	self:addEntity(GameController())

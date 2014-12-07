@@ -6,13 +6,14 @@ Canvas.static.BRUSH = {
 	{ size = 0, spacing = 0 }
 }
 
-function Canvas:initialize(w, h)
+function Canvas:initialize()
 	Entity.initialize(self)
 
 	self.tool = 2
 	self.brush_dir = 1
 	self.color = { 224, 24, 24, 255 }
-	self.width, self.height = w, h
+	self.width = 120
+	self.height =  160
 
 	self.canvas = love.graphics.newCanvas(self.width, self.height)
 	self.canvas_bg = Resources.static:getImage("canvas.png")
@@ -163,6 +164,10 @@ end
 
 function Canvas:setTool(t)
 	self.tool = t
+end
+
+function Canvas:getImageData()
+	return self.canvas:getImageData()
 end
 
 return Canvas

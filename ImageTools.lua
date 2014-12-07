@@ -39,6 +39,9 @@ function ImageTools.histogram(data, steps)
 	return hist
 end
 
+-- Compares two histogram
+-- Returns similarty from 0 to 1
+-- where 1 is completely similar
 function ImageTools.compare(hist1, hist2)
 	assert(hist1.steps == hist2.steps)
 	assert(hist1.width == hist2.width)
@@ -55,7 +58,7 @@ function ImageTools.compare(hist1, hist2)
 		end
 	end
 
-	return dist
+	return 1 - dist/2
 end
 
 return ImageTools

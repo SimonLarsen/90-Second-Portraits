@@ -1,3 +1,5 @@
+local ImageTools = require("ImageTools")
+
 local GameController = class("GameController", Entity)
 
 function GameController:initialize()
@@ -20,11 +22,49 @@ function GameController:update(dt)
 	local mx, my = Mouse.static:getPosition()
 	if mx >= WIDTH-59 and my >= HEIGHT-20 then
 		if Mouse.static:wasPressed("l") then
-			self.canvas:swap()
-			self.customer:swap()
-			self.background:swap()
+			self:next()
 		end
 	end
+end
+
+function GameController:next()
+	local customer = self.canvas:getImageData()
+	local portrait = self:getCustomerImage()
+
+	print(self:calculateScore(customer, portrait))
+
+	self.canvas:swap()
+	self.customer:swap()
+	self.background:swap()
+end
+
+function GameController:calculateScore(customer, portrait)
+	local hist1 = ImageTools.histogram(customer, 32)
+	local hist2 = ImageTools.histogram(portrait, 32)
+
+	local comp = ImageTools.compare(hist1, hist2)
+
+	return comp
+end
+
+function GameController:getCustomerImage()
+	local canvas = love.graphics.newCanvas(120, 160)
+	canvas:clear(241, 232, 199)
+
+	local oldCanvas = love.graphics.getCanvas()
+
+	love.graphics.setCanvas(canvas)
+	love.graphics.push()
+	love.graphics.translate(-180, -10)
+
+	self.background:draw()
+	self.customer:draw()
+
+	love.graphics.pop()
+
+	love.graphics.setCanvas(oldCanvas)
+
+	return canvas:getImageData()
 end
 
 function GameController:gui()
