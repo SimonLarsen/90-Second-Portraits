@@ -1,15 +1,13 @@
 local Customer = class("Customer", Entity)
 
-Customer.static.NUM_CUSTOMERS = 11
-
 function Customer:initialize()
 	Entity.initialize(self, 0, 0, 20)
 
+	self.id = 1
 	self:reset()
 end
 
 function Customer:reset()
-	self.id = love.math.random(1, Customer.static.NUM_CUSTOMERS)
 	self.image = Resources.static:getImage("customer".. self.id ..".png")
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
@@ -32,13 +30,14 @@ function Customer:update(dt)
 		self.x = self.x + dt * 100
 		self.y = 10 - math.abs(math.cos((240 - self.x) / 10)) * 10
 
-		if self.x > WIDTH+16 + self.width/2 then
+		if self.x > WIDTH+146 then
+			self.id = self.id + 1
 			self:reset()
 		end
 	end
 end
 
-function Customer:leave()
+function Customer:swap()
 	self.state = 3
 end
 

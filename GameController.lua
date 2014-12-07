@@ -7,18 +7,22 @@ function GameController:initialize()
 	self.quads_next = love.graphics.newQuad(0, 0, 55, 16, 55, 32)
 	self.quads_next_hover = love.graphics.newQuad(0, 16, 55, 16, 55, 32)
 
+	self.canvas = nil
 	self.customer = nil
+	self.background = nil
 end
 
 function GameController:update(dt)
-	if self.customer == nil then
-		self.customer = self.scene:findOfType("Customer")
-	end
+	if self.canvas == nil then self.canvas = self.scene:findOfType("Canvas") end
+	if self.customer == nil then self.customer = self.scene:findOfType("Customer") end
+	if self.background == nil then self.background = self.scene:findOfType("Background") end
 
 	local mx, my = Mouse.static:getPosition()
 	if mx >= WIDTH-59 and my >= HEIGHT-20 then
 		if Mouse.static:wasPressed("l") then
-			self.customer:leave()
+			self.canvas:swap()
+			self.customer:swap()
+			self.background:swap()
 		end
 	end
 end
