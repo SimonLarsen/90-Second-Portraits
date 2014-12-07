@@ -31,8 +31,6 @@ function GameController:next()
 	local customer = self.canvas:getImageData()
 	local portrait = self:getCustomerImage()
 
-	print(self:calculateScore(customer, portrait))
-
 	self.canvas:swap()
 	self.customer:swap()
 	self.background:swap()

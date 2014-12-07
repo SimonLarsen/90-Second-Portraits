@@ -60,3 +60,14 @@ function math.hsvtorgb(h, s, v, a)
 
   return r * 255, g * 255, b * 255, a * 255
 end
+
+function math.huemid(a, b)
+	local lower = math.min(a, b)
+	local higher = math.max(a, b)
+
+	if higher - lower > 0.5 then
+		return (higher + (1 + lower - higher) / 2) % 1
+	else
+		return (higher + lower) / 2
+	end
+end

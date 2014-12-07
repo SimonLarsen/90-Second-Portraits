@@ -65,9 +65,10 @@ function Palette:update(dt)
 				self.toolbox:setActive(true)
 				self.controller:setActive(true)
 
-				if self.colormixer:getTotal() > 0 then
+				local color = self.colormixer:getColor()
+				if color then
 					local slot = self.colormixer:getSlot()
-					self.colors[slot] = self.colormixer:getColor()
+					self.colors[slot] = color
 					self.canvas:setColor(self.colors[slot])
 				end
 				self.colormixer:kill()

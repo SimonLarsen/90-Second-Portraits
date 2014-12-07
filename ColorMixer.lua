@@ -23,30 +23,33 @@ function ColorMixer:initialize(slot)
 	end
 end
 
-function ColorMixer:updateColor()
-	local mix = {0, 0, 0}
-	local totals = {0, 0, 0}
-	self.total = 0
-	for i,v in ipairs(ColorMixer.static.COLORS) do
-		local h, s, v = math.rgbtohsv(v[1], v[2], v[3], 255)
-		if i >= 3 then
-			mix[1] = mix[1] + h * self.counts[i]
-			totals[1] = totals[1] + self.counts[i]
-		end
-		mix[2] = mix[2] + s * self.counts[i]
-		mix[3] = mix[3] + v * self.counts[i]
-		totals[2] = totals[2] + self.counts[i]
-		totals[3] = totals[3] + self.counts[i]
-		self.total = self.total + self.counts[i]
+function ColorMixer:reset()
+	self.mycolor = nil
+	self.hasHue = false
+	self.splats = {}
+end
+
+function ColorMixer:updateColor(color, hasHue)
+	self.hasHue = self.hasHue or hasHue
+
+	if self.mycolor == nil then
+		self.mycolor = { color[1], color[2], color[3] }
+		return
 	end
 
-	if totals[1] > 0 then
-		mix[1] = mix[1] / totals[1]
-	end
-	mix[2] = mix[2] / totals[2]
-	mix[3] = mix[3] / totals[3]
+	local oh, os, ov = math.rgbtohsv(self.mycolor[1], self.mycolor[2], self.mycolor[3], 255)
+	local nh, ns, nv = math.rgbtohsv(color[1], color[2], color[3], 255)
 
-	local r, g, b = math.hsvtorgb(mix[1], mix[2], mix[3], 255)
+	local h, s, v
+	if self.hasHue == false then
+		h = nh
+	else
+		h = math.huemid(oh, math.huemid(oh, nh))
+	end
+	s = (2*os + ns) / 3
+	v = (2*ov + nv) / 3
+
+	local r, g, b = math.hsvtorgb(h, s, v, 255)
 	self.mycolor = { r, g, b }
 end
 
@@ -67,8 +70,11 @@ function ColorMixer:update(dt)
 		if mx >= x and mx <= x+40
 		and my >= y and my <= y+64 then
 			if Mouse.static:wasPressed("l") then
-				self.counts[i] = self.counts[i] + 1
-				self:updateColor()
+				if i <= 2 then
+					self:updateColor(ColorMixer.static.COLORS[i], false)
+				else
+					self:updateColor(ColorMixer.static.COLORS[i], true)
+				end
 
 				for i=1, 10 do
 					local angle = love.math.random() * 2 * math.pi
@@ -104,7 +110,7 @@ function ColorMixer:gui()
 
 	love.graphics.draw(self.mix_circle, 80, 180, 0, 1, 1, 45, 45)
 
-	if self.total > 0 then
+	if self.mycolor then
 		love.graphics.setColor(self.mycolor)
 		for i,v in ipairs(self.splats) do
 			love.graphics.circle("fill", 80+v.x, 180+v.y, v.r, 32)
@@ -117,22 +123,8 @@ function ColorMixer:gui()
 	love.graphics.draw(self.submit_button, 201, 202)
 end
 
-function ColorMixer:reset()
-	self.mycolor = { 0, 0, 0 }
-	self.counts = {}
-	for i=1,#ColorMixer.static.COLORS do
-		self.counts[i] = 0
-	end
-	self.total = 0
-	self.splats = {}
-end
-
 function ColorMixer:getSlot()
 	return self.slot
-end
-
-function ColorMixer:getTotal()
-	return self.total
 end
 
 function ColorMixer:getColor()
