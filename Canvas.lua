@@ -10,75 +10,68 @@ function Canvas:initialize(x, y, w, h)
 	Entity.initialize(self)
 
 	self.x, self.y = x, y
-	self._width, self._height = w, h
+	self.width, self.height = w, h
 
-	self._tool = 2
-	self._color = { 224, 24, 24, 255 }
+	self.tool = 2
+	self.color = { 224, 24, 24, 255 }
 
-	self._canvas = love.graphics.newCanvas(self._width, self._height)
-	self._canvas:clear(237, 217, 122, 255)
+	self.canvas = love.graphics.newCanvas(self.width, self.height)
+	self.canvas:clear(241, 232, 199)
 
-	self._cursor = Resources.static:getImage("brush_big.png")
-
-	self._splats = {}
-	self._splats[2] = Resources.static:getImage("splats_big.png")
-	self._splat_quads = {}
-	for brush = 1, 2 do
-		local size = Canvas.static.BRUSH[brush].size
-		for i=0,3 do
-			self._splat_quads[brush] = love.graphics.newQuad(i*size, 0, size, size, size*4, size)
-		end
-	end
+	self.cursor = Resources.static:getImage("brush_big.png")
 end
 
 function Canvas:update(dt)
 	local mx, my = Mouse.static:getPosition()
 	mx = mx - self.x
 	my = my - self.y
-	local spacing = Canvas.static.BRUSH[self._tool].spacing
-	local size = Canvas.static.BRUSH[self._tool].size
 
-	love.graphics.setCanvas(self._canvas)
-	love.graphics.setColor(self._color)
+	if love.keyboard.isDown("1") then
+		self.tool = 1
+	end
+	if love.keyboard.isDown("2") then
+		self.tool = 2
+	end
+	if love.keyboard.isDown("3") then
+		self.tool = 3
+	end
+
+	-- Check mouse controls
+	local spacing = Canvas.static.BRUSH[self.tool].spacing
+
+	love.graphics.setCanvas(self.canvas)
+	love.graphics.setColor(self.color)
 
 	if Mouse.static:wasPressed("l") then
-		if self._tool == 1 or self._tool == 2 then
-			local brush_index = love.math.random(0, 3)
-			love.graphics.draw(self._splats[self._tool], self._splat_quads[self._tool], mx, my, 0, 1, 1, size/2, size/2)
-			self._lastx = mx
-			self._lasty = my
-		elseif self._tool == 3 then
-			self._lastx = mx
-			self._lasty = my
+		if self.tool == 1 or self.tool == 2 then
+			self.lastx = mx
+			self.lasty = my
+		elseif self.tool == 3 then
+			self.lastx = mx
+			self.lasty = my
 		end
 	end
 
-	if Mouse.static:wasReleased("l") and self._tool == 3 then
-		local radius = my - self._lasty
+	if Mouse.static:wasReleased("l") and self.tool == 3 then
+		local radius = my - self.lasty
 		for i=1,10 do
 			local angle = love.math.random()*2*math.pi
 			local offset = love.math.random()*radius
 			local size = love.math.random() * radius/2
-			local x = self._lastx + math.cos(angle) * offset
-			local y = self._lasty + math.sin(angle) * offset
+			local x = self.lastx + math.cos(angle) * offset
+			local y = self.lasty + math.sin(angle) * offset
 			love.graphics.circle("fill", x, y, size, 32)
 		end
 	end
 
-	if Mouse.static:isDown("l") and (self._tool == 1 or self._tool == 2) then
-		local xdist = math.cap(mx, 0, self._width) - self._lastx
-		local ydist = math.cap(my, 0, self._height) - self._lasty
-		local fsteps = math.sqrt(xdist^2 + ydist^2) / spacing
-		local steps = math.floor(fsteps)
-		if steps > 0 then
-			local xinc = xdist / fsteps
-			local yinc = ydist / fsteps
-			for i=1, steps-1 do
-				self._lastx = self._lastx + xinc
-				self._lasty = self._lasty + yinc
-				love.graphics.draw(self._splats[self._tool], self._splat_quads[self._tool], self._lastx, self._lasty, 0, 1, 1, size/2, size/2)
-			end
-		end
+	if Mouse.static:isDown("l") and (self.tool == 1 or self.tool == 2) then
+		local size = Canvas.static.BRUSH[self.tool].size
+		love.graphics.setLineWidth(size)
+		love.graphics.line(self.lastx, self.lasty, mx, my)
+		love.graphics.circle("fill", self.lastx, self.lasty, size/2, 32)
+		love.graphics.circle("fill", mx, my, size/2, 32)
+
+		self.lastx, self.lasty = mx, my
 	end
 
 	love.graphics.setColor(255, 255, 255, 255)
@@ -86,12 +79,16 @@ function Canvas:update(dt)
 end
 
 function Canvas:draw()
-	love.graphics.draw(self._canvas, self.x, self.y)
+	love.graphics.draw(self.canvas, self.x, self.y)
 end
 
 function Canvas:gui()
 	local mx, my = Mouse.static:getPosition()
-	love.graphics.draw(self._cursor, mx, my)
+	love.graphics.draw(self.cursor, mx, my)
+end
+
+function Canvas:setColor(c)
+	self.color = c
 end
 
 return Canvas

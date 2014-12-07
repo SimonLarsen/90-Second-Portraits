@@ -1,9 +1,11 @@
 local Entity = class("Entity")
 
-function Entity:initialize()
-	self.x, self.y, self.z = 0, 0, 0
+function Entity:initialize(x, y, z)
+	self.x = x or 0
+	self.y = y or 0
+	self.z = z or 0
 
-	self._alive = true
+	self.alive = true
 end
 function Entity:update(dt)
 	
@@ -18,11 +20,11 @@ function Entity:gui()
 end
 
 function Entity:kill()
-	self._alive = false
+	self.alive = false
 end
 
 function Entity:isAlive()
-	return self._alive
+	return self.alive
 end
 
 return Entity

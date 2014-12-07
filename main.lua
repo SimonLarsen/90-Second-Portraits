@@ -15,6 +15,7 @@ function love.load()
 	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
 	love.mouse.setVisible(false)
 	love.graphics.setDefaultFilter("nearest", "nearest")
+	love.graphics.setLineStyle("rough")
 
 	gamestate.registerEvents()
 	gamestate.switch(require("GameScene")())
