@@ -41,10 +41,14 @@ function ColorMixer:updateColor(color, hasHue)
 	local nh, ns, nv = math.rgbtohsv(color[1], color[2], color[3], 255)
 
 	local h, s, v
-	if self.hasHue == false then
+	if self.hasHue and hasHue then
+		h = math.huemid(oh, math.huemid(oh, nh))
+	elseif self.hasHue then
+		h = oh
+	elseif hasHue then
 		h = nh
 	else
-		h = math.huemid(oh, math.huemid(oh, nh))
+		h = 0
 	end
 	s = (2*os + ns) / 3
 	v = (2*ov + nv) / 3

@@ -31,16 +31,21 @@ function GameController:next()
 	local customer = self.canvas:getImageData()
 	local portrait = self:getCustomerImage()
 
+	local hist1 = ImageTools.histogram(customer, 16)
+	local hist2 = ImageTools.histogram(portrait, 16)
+
+	local histscore = ImageTools.compareHistograms(hist1, hist2)
+	local bucketscore = ImageTools.compareBuckets(customer, portrait, 10)
+	
+	local score = histscore*0.25 + bucketscore*0.75
+
 	self.canvas:swap()
 	self.customer:swap()
 	self.background:swap()
 end
 
 function GameController:calculateScore(customer, portrait)
-	local hist1 = ImageTools.histogram(customer, 32)
-	local hist2 = ImageTools.histogram(portrait, 32)
-
-	local comp = ImageTools.compare(hist1, hist2)
+	local comp = ImageTools.compare(customer, portrait, 10)
 
 	return comp
 end

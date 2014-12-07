@@ -42,7 +42,7 @@ end
 -- Compares two histogram
 -- Returns similarty from 0 to 1
 -- where 1 is completely similar
-function ImageTools.compare(hist1, hist2)
+function ImageTools.compareHistograms(hist1, hist2)
 	assert(hist1.steps == hist2.steps)
 	assert(hist1.width == hist2.width)
 	assert(hist1.height == hist2.height)
@@ -59,6 +59,62 @@ function ImageTools.compare(hist1, hist2)
 	end
 
 	return 1 - dist/2
+end
+
+function ImageTools.downscale(data, size)
+	local w, h = data:getDimensions()
+
+	local xbuckets = w / size
+	local ybuckets = h / size
+	local count = size*size
+
+	local buckets = {}
+	for ix=0, xbuckets-1 do
+		buckets[ix] = {}
+		for iy=0, ybuckets-1 do
+			local mb = {0, 0, 0}
+
+			for x=ix*size, (ix+1)*size-1 do
+				for y=iy*size, (iy+1)*size-1 do
+					local r, g, b = data:getPixel(x, y)
+
+					mb[1] = mb[1] + r
+					mb[2] = mb[2] + g
+					mb[3] = mb[3] + b
+				end
+			end
+
+			mb[1] = mb[1] / count
+			mb[2] = mb[2] / count
+			mb[3] = mb[3] / count
+			buckets[ix][iy] = mb
+		end
+	end
+
+	return buckets
+end
+
+function ImageTools.compareBuckets(data1, data2, size)
+	assert(data1:getWidth() == data2:getWidth())
+	assert(data1:getHeight() == data2:getHeight())
+
+	local small1 = ImageTools.downscale(data1, size)
+	local small2 = ImageTools.downscale(data2, size)
+
+	local xbuckets = data1:getWidth() / size
+	local ybuckets = data1:getHeight() / size
+
+	local dist = 0
+	for ix=0, xbuckets-1 do
+		for iy=0, ybuckets-1 do
+			local rdist = small1[ix][iy][1] - small2[ix][iy][1]
+			local gdist = small1[ix][iy][2] - small2[ix][iy][2]
+			local bdist = small1[ix][iy][3] - small2[ix][iy][3]
+
+			dist = dist + math.sqrt(rdist^2 + gdist^2 + bdist^2)
+		end
+	end
+	return 1 - math.min(40000, dist)/40000
 end
 
 return ImageTools
