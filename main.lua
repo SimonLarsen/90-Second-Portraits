@@ -11,11 +11,15 @@ WIDTH = 320
 HEIGHT = 240
 SCALE = 3
 
+local canvas
+
 function love.load()
 	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
 	--love.mouse.setVisible(false)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setLineStyle("rough")
+
+	canvas = love.graphics.newCanvas(WIDTH, HEIGHT)
 
 	gamestate.registerEvents()
 	gamestate.switch(require("GameScene")())
@@ -75,12 +79,22 @@ function love.run()
 			love.graphics.clear()
 			love.graphics.origin()
 			love.graphics.push()
-			love.graphics.scale(SCALE, SCALE)
+
+			love.graphics.setCanvas(canvas)
 
 			if love.draw then love.draw() end
 			if love.gui then love.gui() end
 
 			love.graphics.pop()
+			love.graphics.push()
+
+			love.graphics.setCanvas()
+			love.graphics.scale(SCALE, SCALE)
+
+			love.graphics.draw(canvas, 0, 0)
+			
+			love.graphics.pop()
+
 			love.graphics.present()
 		end
 

@@ -17,6 +17,14 @@ function ColorMixer:initialize(slot)
 		self.counts[i] = 0
 	end
 	self.total = 0
+	self.splats = {}
+
+	self.mix_circle = Resources.static:getImage("mix_circle.png")
+	self.tubes = Resources.static:getImage("tubes.png")
+	self.quads_tubes = {}
+	for i=1, 8 do
+		self.quads_tubes[i] = love.graphics.newQuad((i-1)*40, 0, 40, 60, 320, 60)
+	end
 end
 
 function ColorMixer:updateColor()
@@ -29,19 +37,14 @@ function ColorMixer:updateColor()
 			mix[1] = mix[1] + h * self.counts[i]
 			totals[1] = totals[1] + self.counts[i]
 		end
-
 		mix[2] = mix[2] + s * self.counts[i]
 		mix[3] = mix[3] + v * self.counts[i]
-
 		totals[2] = totals[2] + self.counts[i]
 		totals[3] = totals[3] + self.counts[i]
-
 		self.total = self.total + self.counts[i]
 	end
 
-	if totals[1] == 0 then
-		mix[1] = 0
-	else
+	if totals[1] > 0 then
 		mix[1] = mix[1] / totals[1]
 	end
 	mix[2] = mix[2] / totals[2]
@@ -55,14 +58,28 @@ function ColorMixer:update(dt)
 	local mx, my = Mouse.static:getPosition()
 
 	for i=1, #ColorMixer.static.COLORS do
-		local x = (i % 4 + 1) * 32 - 16
+		local x = (i % 4) * 40
 		local y = math.floor((i-1) / 4) * 64
 
-		if mx >= x and mx <= x+32
+		if mx >= x and mx <= x+40
 		and my >= y and my <= y+64 then
 			if Mouse.static:wasPressed("l") then
 				self.counts[i] = self.counts[i] + 1
 				self:updateColor()
+
+				for i=1, 10 do
+					local angle = love.math.random() * 2 * math.pi
+					local offset = math.random(4, 25)
+					local x = math.cos(angle) * offset
+					local y = math.sin(angle) * offset
+					local r = math.random() * 10
+					local splat = { x=x, y=y, r=r }
+					table.insert(self.splats, splat)
+				end
+
+				while #self.splats > 50 do
+					table.remove(self.splats, 1)
+				end
 			end
 		end
 	end
@@ -75,16 +92,20 @@ function ColorMixer:gui()
 	love.graphics.rectangle("fill", 180, 0, 120, 10)
 	love.graphics.rectangle("fill", 180, 170, 120, HEIGHT-170)
 
-	for i,v in ipairs(ColorMixer.static.COLORS) do
-		love.graphics.setColor(v)
-		local x = (i % 4 + 1) * 32 - 16
+	love.graphics.setColor(255, 255, 255, 255)
+	for i=1, #ColorMixer.static.COLORS do
+		local x = (i % 4) * 40
 		local y = math.floor((i-1) / 4) * 64
-		love.graphics.rectangle("fill", x, y, 32, 64)
+		love.graphics.draw(self.tubes, self.quads_tubes[i], x, y)
 	end
+
+	love.graphics.draw(self.mix_circle, 80, 180, 0, 1, 1, 45, 45)
 
 	if self.total > 0 then
 		love.graphics.setColor(self.mycolor)
-		love.graphics.rectangle("fill", WIDTH/4-32, HEIGHT-96, 64, 64)
+		for i,v in ipairs(self.splats) do
+			love.graphics.circle("fill", 80+v.x, 180+v.y, v.r, 32)
+		end
 	end
 
 	love.graphics.setColor(255, 255, 255, 255)

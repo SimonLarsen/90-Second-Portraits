@@ -38,6 +38,8 @@ function Canvas:update(dt)
 	-- Check mouse controls
 	local spacing = Canvas.static.BRUSH[self.tool].spacing
 
+	local oldCanvas = love.graphics.getCanvas()
+
 	love.graphics.setCanvas(self.canvas)
 	love.graphics.setColor(self.color)
 
@@ -75,7 +77,8 @@ function Canvas:update(dt)
 	end
 
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.setCanvas()
+
+	love.graphics.setCanvas(oldCanvas)
 end
 
 function Canvas:draw()
