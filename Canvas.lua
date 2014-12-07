@@ -22,6 +22,7 @@ function Canvas:initialize(x, y, w, h)
 
 	self.splatter = Resources.static:getImage("splatter.png")
 	self.brush_small = Animation(Resources.static:getImage("brush_small.png"), 30, 40)
+	self.brush_small_tips = Animation(Resources.static:getImage("brush_small_tips.png"), 30, 40)
 	self.brush_big = Animation(Resources.static:getImage("brush_big.png"), 40, 50)
 	self.brush_big_tips = Animation(Resources.static:getImage("brush_big_tips.png"), 40, 50)
 	self.bucket = Resources.static:getImage("bucket.png")
@@ -92,6 +93,8 @@ function Canvas:gui()
 	local mx, my = Mouse.static:getPosition()
 	if self.tool == 1 then
 		love.graphics.draw(self.brush_small._image, self.brush_small._quads[self.brush_dir], mx, my, 0, 1, 1, 9, 2)
+		love.graphics.setColor(self.color)
+		love.graphics.draw(self.brush_small_tips._image, self.brush_small_tips._quads[self.brush_dir], mx, my, 0, 1, 1, 9, 2)
 
 	elseif self.tool == 2 then
 		love.graphics.draw(self.brush_big._image, self.brush_big._quads[self.brush_dir], mx, my, 0, 1, 1, 14, 3)
@@ -109,6 +112,7 @@ function Canvas:gui()
 			love.graphics.draw(self.bucket_aim, mx, my, 0, 1, 1, 17, -17)
 		end
 	end
+
 	love.graphics.setColor(255, 255, 255)
 end
 

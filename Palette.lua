@@ -5,7 +5,7 @@ local Palette = class("Palette", Entity)
 Palette.static.PAINT_POS = { {7, 7}, {34, -4}, {67, -9}, {101, -1} }
 
 function Palette:initialize(x, y)
-	Entity.initialize(self, x, y, 1)
+	Entity.initialize(self, x, y, 2)
 
 	self.colors = {
 		{255, 255, 255},
@@ -22,6 +22,7 @@ function Palette:initialize(x, y)
 
 	self.canvas = nil
 	self.toolbox = nil
+	self.controller = nil
 end
 
 function Palette:update(dt)
@@ -29,6 +30,7 @@ function Palette:update(dt)
 
 	if self.canvas == nil then self.canvas = self.scene:findOfType("Canvas") end
 	if self.toolbox == nil then self.toolbox = self.scene:findOfType("Toolbox") end
+	if self.controller == nil then self.controller = self.scene:findOfType("GameController") end
 
 	if Mouse.static:wasPressed("l") then
 		-- Colors
@@ -43,6 +45,7 @@ function Palette:update(dt)
 				elseif self.state == 2 then
 					self.canvas:setActive(false)
 					self.toolbox:setActive(false)
+					self.controller:setActive(false)
 					self.colormixer = self.scene:addEntity(ColorMixer(i))
 					self.state = 3
 				end
@@ -54,10 +57,13 @@ function Palette:update(dt)
 		and my >= self.y+20 and my <= self.y+41 then
 			if self.state == 1 then
 				self.state = 2
+			elseif self.state == 2 then
+				self.state = 1
 			elseif self.state == 3 then
 				self.state = 1
 				self.canvas:setActive(true)
 				self.toolbox:setActive(true)
+				self.controller:setActive(true)
 
 				if self.colormixer:getTotal() > 0 then
 					local slot = self.colormixer:getSlot()

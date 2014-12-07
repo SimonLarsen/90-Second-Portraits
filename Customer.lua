@@ -6,20 +6,24 @@ function Customer:initialize(id)
 	self.image = Resources.static:getImage("customer"..id..".png")
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
-	self.state = 0
+	self.state = 1
 
 	self.x = WIDTH + self.width/2
 end
 
 function Customer:update(dt)
-	if self.state == 0 then
+	if self.state == 1 then
 		self.x = self.x - dt * 100
 		self.y = 10 - math.abs(math.cos((240 - self.x) / 10)) * 10
 		if self.x <= 240 then
 			self.x = 240
 			self.y = 0
-			self.state = 1
+			self.state = 2
 		end
+
+	elseif self.state == 3 then
+		self.x = self.x + dt * 100
+		self.y = 10 - math.abs(math.cos((240 - self.x) / 10)) * 10
 	end
 end
 
