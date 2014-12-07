@@ -45,4 +45,8 @@ function Customer:draw()
 	love.graphics.draw(self.image, self.x, HEIGHT+self.y, 0, 1, 1, self.width/2, self.height)
 end
 
+function Customer:getState()
+	return self.state
+end
+
 return Customer

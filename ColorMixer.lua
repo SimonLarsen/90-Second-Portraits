@@ -7,11 +7,17 @@ ColorMixer.static.COLORS = {
 	{ 0,0,192 }, { 128,0,128 }
 }
 
-function ColorMixer:initialize(slot)
+function ColorMixer:initialize(slot, color)
 	Entity.initialize(self)
 
 	self.slot = slot
 	self:reset()
+
+	local h, s, v = math.rgbtohsv(color[1], color[2], color[3], 255)
+	local hasHue = false
+	if s > 0 then hasHue = true end
+	self:updateColor(color, hasHue)
+	self:addSplats()
 
 	self.mix_circle = Resources.static:getImage("mix_circle.png")
 	self.submit_button = Resources.static:getImage("submit.png")
@@ -79,22 +85,25 @@ function ColorMixer:update(dt)
 				else
 					self:updateColor(ColorMixer.static.COLORS[i], true)
 				end
-
-				for i=1, 10 do
-					local angle = love.math.random() * 2 * math.pi
-					local offset = math.random(4, 25)
-					local x = math.cos(angle) * offset
-					local y = math.sin(angle) * offset
-					local r = math.random() * 10
-					local splat = { x=x, y=y, r=r }
-					table.insert(self.splats, splat)
-				end
-
-				while #self.splats > 50 do
-					table.remove(self.splats, 1)
-				end
+				self:addSplats()
 			end
 		end
+	end
+end
+
+function ColorMixer:addSplats()
+	for i=1, 10 do
+		local angle = love.math.random() * 2 * math.pi
+		local offset = math.random(4, 25)
+		local x = math.cos(angle) * offset
+		local y = math.sin(angle) * offset
+		local r = math.random() * 10
+		local splat = { x=x, y=y, r=r }
+		table.insert(self.splats, splat)
+	end
+
+	while #self.splats > 50 do
+		table.remove(self.splats, 1)
 	end
 end
 
@@ -114,6 +123,12 @@ function ColorMixer:gui()
 
 	love.graphics.draw(self.mix_circle, 80, 180, 0, 1, 1, 45, 45)
 
+	love.graphics.setColor(0, 0, 0)
+	if self.mycolor then
+		for i,v in ipairs(self.splats) do
+			love.graphics.circle("fill", 80+v.x, 180+v.y, v.r+1, 32)
+		end
+	end
 	if self.mycolor then
 		love.graphics.setColor(self.mycolor)
 		for i,v in ipairs(self.splats) do

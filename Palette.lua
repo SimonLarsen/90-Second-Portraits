@@ -45,8 +45,7 @@ function Palette:update(dt)
 				elseif self.state == 2 then
 					self.canvas:setActive(false)
 					self.toolbox:setActive(false)
-					self.controller:setActive(false)
-					self.colormixer = self.scene:addEntity(ColorMixer(i))
+					self.colormixer = self.scene:addEntity(ColorMixer(i, self.colors[i]))
 					self.state = 3
 				end
 			end
@@ -63,7 +62,6 @@ function Palette:update(dt)
 				self.state = 1
 				self.canvas:setActive(true)
 				self.toolbox:setActive(true)
-				self.controller:setActive(true)
 
 				local color = self.colormixer:getColor()
 				if color then
