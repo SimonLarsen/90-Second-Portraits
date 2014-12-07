@@ -2,6 +2,7 @@ local Canvas = require("Canvas")
 local Palette = require("Palette")
 local Sprite = require("Sprite")
 local Toolbox = require("Toolbox")
+local Customer = require("Customer")
 
 local GameScene = class("GameScene", Scene)
 
@@ -14,6 +15,9 @@ function GameScene:initialize()
 
 	self:addEntity(Sprite(18, 18, 50, Resources.static:getImage("canvas.png"), 0, 0))
 	self:addEntity(Sprite(WIDTH/2, HEIGHT/2, 100, Resources.static:getImage("background.png")))
+	self:addEntity(Sprite(240, 90, 0, Resources.static:getImage("customer_frame.png")))
+
+	self:addEntity(Customer(1))
 end
 
 return GameScene

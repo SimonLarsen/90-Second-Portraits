@@ -91,4 +91,8 @@ function Canvas:setColor(c)
 	self.color = c
 end
 
+function Canvas:setTool(t)
+	self.tool = t
+end
+
 return Canvas
