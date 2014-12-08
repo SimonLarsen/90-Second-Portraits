@@ -86,11 +86,14 @@ function Canvas:update(dt)
 		end
 
 		if Mouse.static:wasReleased("l") and self.tool == 3 and self.lastx then
-			local radius = math.abs(my - self.lasty)
-			local scale = 4*radius / 415
-			local rotation = love.math.random() * 2 * math.pi
-			love.graphics.draw(self.splatter, self.lastx, self.lasty, rotation, scale, scale, 202, 152)
-			Sound.play("splat_big.wav")
+			if self.lastx >= 0 and self.lastx < self.width
+			and self.lasty >= 0 and self.lasty < self.height then
+				local radius = math.abs(my - self.lasty)
+				local scale = 4*radius / 415
+				local rotation = love.math.random() * 2 * math.pi
+				love.graphics.draw(self.splatter, self.lastx, self.lasty, rotation, scale, scale, 202, 152)
+				Sound.play("splat_big.wav")
+			end
 		end
 
 		if Mouse.static:isDown("l") then
@@ -106,6 +109,7 @@ function Canvas:update(dt)
 		else
 			self.brush_dir = 1
 		end
+
 		love.graphics.setColor(255, 255, 255, 255)
 		love.graphics.setCanvas(oldCanvas)
 	end
