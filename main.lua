@@ -2,6 +2,8 @@ require("mymath")
 class = require("middleclass.middleclass")
 gamestate = require("hump.gamestate")
 Resources = require("Resources")
+Preferences = require("Preferences")
+Timer = require("hump.timer")
 Mouse = require("Mouse")
 Scene = require("Scene")
 Entity = require("Entity")
@@ -19,10 +21,13 @@ function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setLineStyle("rough")
 
+	Preferences.static:load()
+
 	canvas = love.graphics.newCanvas(WIDTH, HEIGHT)
 
 	gamestate.registerEvents()
-	gamestate.switch(require("GameScene")())
+	--gamestate.switch(require("GameScene")())
+	gamestate.switch(require("GalleryScene")())
 end
 
 function love.gui()

@@ -59,8 +59,9 @@ function Canvas:update(dt)
 				self.yspeed = self.yspeed * -0.2
 			end
 		end
+	end
 
-	elseif self.state == 2 then
+	if self.state == 1 or self.state == 2 then
 		mx = mx - self.x
 		my = my - self.y
 
@@ -85,7 +86,7 @@ function Canvas:update(dt)
 		end
 
 		if Mouse.static:wasReleased("l") and self.tool == 3 and self.lastx then
-			local radius = my - self.lasty
+			local radius = math.abs(my - self.lasty)
 			local scale = 4*radius / 415
 			local rotation = love.math.random() * 2 * math.pi
 			love.graphics.draw(self.splatter, self.lastx, self.lasty, rotation, scale, scale, 202, 152)
@@ -104,12 +105,11 @@ function Canvas:update(dt)
 		else
 			self.brush_dir = 1
 		end
-
 		love.graphics.setColor(255, 255, 255, 255)
-
 		love.graphics.setCanvas(oldCanvas)
+	end
 
-	elseif self.state == 3 then
+	if self.state == 3 then
 		self.x = self.x + dt*400
 		self.y = self.y - dt*200
 		self.rotation = self.rotation + dt*4

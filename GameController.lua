@@ -1,12 +1,21 @@
 local ImageTools = require("ImageTools")
+local GalleryScene = require("GalleryScene")
 
 local GameController = class("GameController", Entity)
 
 GameController.static.TIME = 90
+GameController.static.ROUNDS = 5
 
-function GameController:initialize()
+function GameController:initialize(customer_order, background_order)
 	Entity.initialize(self, 0, 0, 1)
 	
+	self.day = Preferences.static:get("days", 0) + 1
+	self.scores = {}
+	self.round = 1
+
+	self.customer_order = customer_order
+	self.background_order = background_order
+
 	self.time = GameController.static.TIME
 
 	self.next_button = Resources.static:getImage("next.png")
@@ -47,19 +56,43 @@ end
 function GameController:next()
 	local customer = self.canvas:getImageData()
 	local portrait = self:getCustomerImage()
+	
+	-- Write canvas to image
+	customer:encode(string.format("painting_%d_%d.png", self.day, self.round), "png")
 
+	-- Compare images and calculates score
 	local hist1 = ImageTools.histogram(customer, 16)
 	local hist2 = ImageTools.histogram(portrait, 16)
 
 	local histscore = ImageTools.compareHistograms(hist1, hist2)
 	local bucketscore = ImageTools.compareBuckets(customer, portrait, 10)
 	
-	local score = histscore*0.25 + bucketscore*0.75
+	self.scores[self.round] = histscore*0.25 + bucketscore*0.75
+
 	self.time = GameController.static.TIME
 
-	self.canvas:swap()
-	self.customer:swap()
-	self.background:swap()
+	self.round = self.round + 1
+
+	if self.round <= GameController.static.ROUNDS then
+		self.canvas:swap()
+		self.customer:swap(self.customer_order[self.round])
+		self.background:swap(self.background_order[self.round])
+	else
+		self.canvas:swap()
+		self.customer:swap()
+		self.background:swap()
+		Timer.add(2.2, function()
+			self:saveDay()
+			gamestate.switch(GalleryScene())
+		end)
+	end
+end
+
+function GameController:saveDay()
+	Preferences.static:set("days", self.day)
+
+	Preferences.static:set(string.format("day_%d_customer_order", self.day), self.customer_order)
+	Preferences.static:set(string.format("day_%d_background_order", self.day), self.background_order)
 end
 
 function GameController:calculateScore(customer, portrait)

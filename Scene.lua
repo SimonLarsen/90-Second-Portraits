@@ -11,6 +11,8 @@ function Scene:update(dt)
 		end
 	end
 
+	Timer.update(dt)
+
 	for i=#self.entities, 1, -1 do
 		if self.entities[i]:isAlive() == false then
 			table.remove(self.entities, i)

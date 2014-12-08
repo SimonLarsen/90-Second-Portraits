@@ -1,9 +1,9 @@
 local Customer = class("Customer", Entity)
 
-function Customer:initialize()
+function Customer:initialize(id)
 	Entity.initialize(self, 0, 0, 20)
 
-	self.id = 1
+	self.id = id
 	self:reset()
 end
 
@@ -30,15 +30,16 @@ function Customer:update(dt)
 		self.x = self.x + dt * 100
 		self.y = 10 - math.abs(math.cos((240 - self.x) / 10)) * 10
 
-		if self.x > WIDTH+146 then
-			self.id = self.id + 1
+		if self.x > WIDTH+146 and self.nextid then
+			self.id = self.nextid
 			self:reset()
 		end
 	end
 end
 
-function Customer:swap()
+function Customer:swap(nextid)
 	self.state = 3
+	self.nextid = nextid
 end
 
 function Customer:draw()
