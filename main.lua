@@ -27,8 +27,8 @@ function love.load()
 	canvas = love.graphics.newCanvas(WIDTH, HEIGHT)
 
 	gamestate.registerEvents()
-	gamestate.switch(require("GameScene")())
-	--gamestate.switch(require("GalleryScene")())
+	--gamestate.switch(require("GameScene")())
+	gamestate.switch(require("GalleryScene")())
 	
 	Resources.static:playMusic("Monkeys Spinning Monkeys.mp3")
 end

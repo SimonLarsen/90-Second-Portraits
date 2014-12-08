@@ -6,9 +6,15 @@ function GalleryScene:initialize()
 	Scene.initialize(self)
 
 	self.scroll = 0
-	self.day = Preferences.static:get("days")
+	self.time = 0
+	self.days = Preferences.static:get("days")
+	self.day = self.days
+
 	self.canvas = Resources.static:getImage("canvas.png")
+	self.arrow = Resources.static:getImage("arrow.png")
 	self.quad_background = love.graphics.newQuad(12, 10, 120, 160, 152, 184)
+
+	self.title_font = love.graphics.newFont("data/fonts/yb.ttf", 40)
 
 	self:loadDay()
 end
@@ -37,30 +43,62 @@ function GalleryScene:loadDay()
 end
 
 function GalleryScene:update(dt)
+	self.time = self.time + dt
+
 	local mx, my = Mouse.static:getPosition()
 
-	if mx >= WIDTH/2-16 and mx <= WIDTH/2+16
-	and my >= HEIGHT-32 and my <= HEIGHT then
-		if Mouse.static:isDown("l") then
-			self.scroll = math.min(GalleryScene.static.MAX_SCROLL, self.scroll + dt*200)
+	if Mouse.static:wasPressed("l") then
+		if my+self.scroll >= 48 and my+self.scroll <= 80 then
+			if mx <= 32 and self.day > 1 then
+				self.day = self.day - 1
+				self:loadDay()
+			end
+			if mx >= WIDTH-32 and self.day < self.days then
+				self.day = self.day + 1
+				self:loadDay()
+			end
 		end
 	end
 
-	if mx >= WIDTH/2-16 and mx <= WIDTH/2+16
-	and my <= 32 then
-		if Mouse.static:isDown("l") then
-			self.scroll = math.max(0, self.scroll - dt*200)
+	-- Scroll buttons
+	if Mouse.static:isDown("l") then
+		if mx >= WIDTH/2-16 and mx <= WIDTH/2+16 then
+			if my >= HEIGHT-32 and my <= HEIGHT then
+				self.scroll = self.scroll + dt*200
+			elseif my <= 32 then
+				self.scroll = self.scroll - dt*200
+			end
 		end
 	end
+
+	if Mouse.static:wasPressed("wu") then
+		self.scroll = self.scroll - 15
+	end
+	if Mouse.static:wasPressed("wd") then
+		self.scroll = self.scroll + 15
+	end
+	self.scroll = math.cap(self.scroll, 0, GalleryScene.static.MAX_SCROLL)
 end
 
 function GalleryScene:gui()
+	local offset = math.cos(self.time*10)*2
+
 	love.graphics.setColor(53, 30, 24)
 	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setColor(255, 255, 255, 255)
 
 	love.graphics.push()
 	love.graphics.translate(0, -self.scroll)
+
+	love.graphics.setFont(self.title_font)
+	love.graphics.printf("Day "..self.day, 0, 10, WIDTH, "center")
+
+	if self.day > 1 then
+		love.graphics.draw(self.arrow, 16+offset, 64, math.pi, 1, 1, 16, 16)
+	end
+	if self.day < self.days then
+		love.graphics.draw(self.arrow, WIDTH-16-offset, 64, 0, 1, 1, 16, 16)
+	end
 
 	for i=1,5 do
 		love.graphics.draw(self.canvas, 20, i*180)
@@ -74,11 +112,11 @@ function GalleryScene:gui()
 	love.graphics.pop()
 
 	if self.scroll > 0 then
-		love.graphics.rectangle("fill", WIDTH/2-16, 0, 32, 32)
+		love.graphics.draw(self.arrow, WIDTH/2, 16-offset, 3*math.pi/2, 1, 1, 16, 16)
 	end
 
 	if self.scroll < GalleryScene.static.MAX_SCROLL then
-		love.graphics.rectangle("fill", WIDTH/2-16, HEIGHT-32, 32, 32)
+		love.graphics.draw(self.arrow, WIDTH/2, HEIGHT-16+offset, math.pi/2, 1, 1, 16, 16)
 	end
 end
 
