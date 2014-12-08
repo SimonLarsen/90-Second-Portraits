@@ -20,12 +20,4 @@ function Resources.static:getSound(path)
 	return self._sounds[path]
 end
 
-function Resources.static:playMusic(path)
-	path = "data/music/" .. path
-	local music = love.audio.newSource(path, "stream")
-	music:setLooping(true)
-	music:setVolume(0.6)
-	love.audio.play(music)
-end
-
 return Resources

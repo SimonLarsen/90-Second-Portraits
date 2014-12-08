@@ -52,10 +52,12 @@ function GalleryScene:update(dt)
 			if mx <= 32 and self.day > 1 then
 				self.day = self.day - 1
 				self:loadDay()
+				Sound.play("pageturn.wav")
 			end
 			if mx >= WIDTH-32 and self.day < self.days then
 				self.day = self.day + 1
 				self:loadDay()
+				Sound.play("pageturn.wav")
 			end
 		end
 	end

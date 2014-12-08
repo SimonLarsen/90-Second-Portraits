@@ -36,10 +36,9 @@ function ColorMixer:reset()
 end
 
 function ColorMixer:updateColor(color, hasHue)
-	self.hasHue = self.hasHue or hasHue
-
 	if self.mycolor == nil then
 		self.mycolor = { color[1], color[2], color[3] }
+		self.hasHue = hasHue
 		return
 	end
 
@@ -61,6 +60,7 @@ function ColorMixer:updateColor(color, hasHue)
 
 	local r, g, b = math.hsvtorgb(h, s, v, 255)
 	self.mycolor = { r, g, b }
+	self.hasHue = self.hasHue or hasHue
 end
 
 function ColorMixer:update(dt)
@@ -86,6 +86,9 @@ function ColorMixer:update(dt)
 					self:updateColor(ColorMixer.static.COLORS[i], true)
 				end
 				self:addSplats()
+
+				local pitch = 0.75 + love.math.random()/2
+				Sound.play("splat_small.wav", pitch)
 			end
 		end
 	end

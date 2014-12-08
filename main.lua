@@ -8,6 +8,7 @@ Timer = require("hump.timer")
 Mouse = require("Mouse")
 Scene = require("Scene")
 Entity = require("Entity")
+Sound = require("Sound")
 Animation = require("Animation")
 
 WIDTH = 320
@@ -30,7 +31,7 @@ function love.load()
 	gamestate.switch(require("GameScene")())
 	--gamestate.switch(require("GalleryScene")())
 	
-	Resources.static:playMusic("Monkeys Spinning Monkeys.mp3")
+	Sound.music("monkeys.ogg")
 end
 
 function love.gui()

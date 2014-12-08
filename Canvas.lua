@@ -90,6 +90,7 @@ function Canvas:update(dt)
 			local scale = 4*radius / 415
 			local rotation = love.math.random() * 2 * math.pi
 			love.graphics.draw(self.splatter, self.lastx, self.lasty, rotation, scale, scale, 202, 152)
+			Sound.play("splat_big.wav")
 		end
 
 		if Mouse.static:isDown("l") then
