@@ -94,10 +94,10 @@ end
 function ColorMixer:addSplats()
 	for i=1, 10 do
 		local angle = love.math.random() * 2 * math.pi
-		local offset = math.random(4, 25)
+		local offset = love.math.random(4, 25)
 		local x = math.cos(angle) * offset
 		local y = math.sin(angle) * offset
-		local r = math.random() * 10
+		local r = love.math.random() * 10
 		local splat = { x=x, y=y, r=r }
 		table.insert(self.splats, splat)
 	end

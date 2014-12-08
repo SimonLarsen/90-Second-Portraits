@@ -11,8 +11,8 @@ local GameScene = class("GameScene", Scene)
 function GameScene:initialize()
 	Scene.initialize(self)
 
-	local customer_order = { 1, 2, 3, 4, 5 }
-	local background_order = { 5, 4, 3, 2, 1 }
+	local customer_order = math.subset(math.seq(1, 18), 5)
+	local background_order = math.subset(math.seq(1, 5), 5)
 
 	self:addEntity(GameController(customer_order, background_order))
 	self:addEntity(Customer(customer_order[1]))

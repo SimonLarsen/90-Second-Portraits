@@ -1,4 +1,5 @@
 require("mymath")
+require("slam")
 class = require("middleclass.middleclass")
 gamestate = require("hump.gamestate")
 Resources = require("Resources")
@@ -26,8 +27,10 @@ function love.load()
 	canvas = love.graphics.newCanvas(WIDTH, HEIGHT)
 
 	gamestate.registerEvents()
-	--gamestate.switch(require("GameScene")())
-	gamestate.switch(require("GalleryScene")())
+	gamestate.switch(require("GameScene")())
+	--gamestate.switch(require("GalleryScene")())
+	
+	Resources.static:playMusic("Monkeys Spinning Monkeys.mp3")
 end
 
 function love.gui()
@@ -45,6 +48,7 @@ end
 function love.run()
 	if love.math then
 		love.math.setRandomSeed(os.time())
+		love.math.random()
 	end
 
 	if love.event then

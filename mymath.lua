@@ -13,7 +13,7 @@ function math.cap(x, min, max)
 end
 
 function math.gauss()
-	return math.random() - math.random()
+	return love.math.random() - love.math.random()
 end
 
 function math.rgbtohsv(r, g, b, a)
@@ -70,4 +70,22 @@ function math.huemid(a, b)
 	else
 		return (higher + lower) / 2
 	end
+end
+
+function math.seq(from, to)
+	local t = {}
+	for i=from, to do
+		table.insert(t, i)
+	end
+	return t
+end
+
+function math.subset(t, n)
+	local s = {}
+	for i=1, n do
+		local index = love.math.random(1, #t)
+		table.insert(s, t[index])
+		table.remove(t, index)
+	end
+	return s
 end

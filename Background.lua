@@ -34,7 +34,7 @@ function Background:update(dt)
 end
 
 function Background:draw()
-	love.graphics.draw(self.image, self.quads[self.id], self.x, self.y)
+	love.graphics.draw(self.image, self.x, self.y)
 end
 
 function Background:swap(nextid)

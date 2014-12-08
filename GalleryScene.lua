@@ -7,7 +7,6 @@ function GalleryScene:initialize()
 
 	self.scroll = 0
 	self.day = Preferences.static:get("days")
-	self.background = Resources.static:getImage("background.png")
 	self.canvas = Resources.static:getImage("canvas.png")
 	self.quad_background = love.graphics.newQuad(12, 10, 120, 160, 152, 184)
 
@@ -56,9 +55,7 @@ function GalleryScene:update(dt)
 end
 
 function GalleryScene:gui()
-	love.graphics.draw(self.background, 0, 0)
-
-	love.graphics.setColor(0, 0, 0, 225)
+	love.graphics.setColor(53, 30, 24)
 	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setColor(255, 255, 255, 255)
 
