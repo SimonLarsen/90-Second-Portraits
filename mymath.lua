@@ -89,3 +89,23 @@ function math.subset(t, n)
 	end
 	return s
 end
+
+function math.rgbtoyuv(r, g, b)
+	r = r / 255
+	g = g / 255
+	b = b / 255
+
+	local y = 0.299 * r + 0.587 * g + 0.114 * b
+	local u = 0.492 * (b - y)
+	local v = 0.877 * (r - y)
+
+	return y, u, v
+end
+
+function math.rgbdistance(r1, g1, b1, r2, g2, b2)
+	local rmean = (r1 + r2) / 2
+	local r = r1 - r2
+	local g = g1 - g2
+	local b = b1 - b2
+	return math.sqrt((2 + rmean/256) * r^2 + 4*g^2 + (2 + (255 - rmean)/256)*b^2)
+end

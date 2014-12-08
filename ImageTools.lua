@@ -77,7 +77,6 @@ function ImageTools.downscale(data, size)
 			for x=ix*size, (ix+1)*size-1 do
 				for y=iy*size, (iy+1)*size-1 do
 					local r, g, b = data:getPixel(x, y)
-
 					mb[1] = mb[1] + r
 					mb[2] = mb[2] + g
 					mb[3] = mb[3] + b
@@ -111,10 +110,11 @@ function ImageTools.compareBuckets(data1, data2, size)
 			local gdist = small1[ix][iy][2] - small2[ix][iy][2]
 			local bdist = small1[ix][iy][3] - small2[ix][iy][3]
 
-			dist = dist + math.sqrt(rdist^2 + gdist^2 + bdist^2)
+			dist = dist + math.rgbdistance(small1[ix][iy][1], small1[ix][iy][2], small1[ix][iy][3], small2[ix][iy][1], small2[ix][iy][2], small2[ix][iy][3])
 		end
 	end
-	return 1 - math.min(40000, dist)/40000
+
+	return 1 - math.min(50000, dist)/50000
 end
 
 return ImageTools

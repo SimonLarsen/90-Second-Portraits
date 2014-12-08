@@ -28,8 +28,7 @@ function love.load()
 	canvas = love.graphics.newCanvas(WIDTH, HEIGHT)
 
 	gamestate.registerEvents()
-	gamestate.switch(require("GameScene")())
-	--gamestate.switch(require("GalleryScene")())
+	gamestate.switch(require("TitleScene")())
 	
 	Sound.music("monkeys.ogg")
 end

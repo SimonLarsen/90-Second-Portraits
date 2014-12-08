@@ -61,14 +61,9 @@ function GameController:next()
 	-- Write canvas to image
 	customer:encode(string.format("painting_%d_%d.png", self.day, self.round), "png")
 
-	-- Compare images and calculates score
-	local hist1 = ImageTools.histogram(customer, 8)
-	local hist2 = ImageTools.histogram(portrait, 8)
-
-	local histscore = ImageTools.compareHistograms(hist1, hist2)
 	local bucketscore = ImageTools.compareBuckets(customer, portrait, 10)
 	
-	self.scores[self.round] = { histscore, bucketscore, self.time }
+	self.scores[self.round] = { score = bucketscore, time = self.time }
 	self.scene:addEntity(ScorePopup(self.round, self.scores[self.round]))
 
 	self.time = GameController.static.TIME

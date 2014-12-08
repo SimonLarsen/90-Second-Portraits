@@ -12,6 +12,7 @@ function GalleryScene:initialize()
 
 	self.canvas = Resources.static:getImage("canvas.png")
 	self.arrow = Resources.static:getImage("arrow.png")
+	self.exit = Resources.static:getImage("exit.png")
 	self.quad_background = love.graphics.newQuad(12, 10, 120, 160, 152, 184)
 
 	self.title_font = love.graphics.newFont("data/fonts/yb.ttf", 40)
@@ -48,7 +49,7 @@ function GalleryScene:update(dt)
 	local mx, my = Mouse.static:getPosition()
 
 	if Mouse.static:wasPressed("l") then
-		if my+self.scroll >= 48 and my+self.scroll <= 80 then
+		if my >= HEIGHT/2-16 and my <= HEIGHT/2+16 then
 			if mx <= 32 and self.day > 1 then
 				self.day = self.day - 1
 				self:loadDay()
@@ -59,6 +60,11 @@ function GalleryScene:update(dt)
 				self:loadDay()
 				Sound.play("pageturn.wav")
 			end
+		end
+
+		if mx >= WIDTH-32 and my <= 32 then
+			gamestate.switch(require("TitleScene")())
+			Sound.play("pageturn.wav")
 		end
 	end
 
@@ -95,20 +101,13 @@ function GalleryScene:gui()
 	love.graphics.setFont(self.title_font)
 	love.graphics.printf("Day "..self.day, 0, 10, WIDTH, "center")
 
-	if self.day > 1 then
-		love.graphics.draw(self.arrow, 16+offset, 64, math.pi, 1, 1, 16, 16)
-	end
-	if self.day < self.days then
-		love.graphics.draw(self.arrow, WIDTH-16-offset, 64, 0, 1, 1, 16, 16)
-	end
-
 	for i=1,5 do
-		love.graphics.draw(self.canvas, 20, i*180)
-		love.graphics.draw(self.paintings[i], 20, i*180)
+		love.graphics.draw(self.canvas, 30, i*180)
+		love.graphics.draw(self.paintings[i], 30, i*180)
 
-		love.graphics.draw(self.canvas, 180, i*180)
-		love.graphics.draw(self.backgrounds[i], self.quad_background, 180, i*180)
-		love.graphics.draw(self.customers[i], self.quads_customers[i], 180, i*180)
+		love.graphics.draw(self.canvas, 170, i*180)
+		love.graphics.draw(self.backgrounds[i], self.quad_background, 170, i*180)
+		love.graphics.draw(self.customers[i], self.quads_customers[i], 170, i*180)
 	end
 
 	love.graphics.pop()
@@ -116,10 +115,18 @@ function GalleryScene:gui()
 	if self.scroll > 0 then
 		love.graphics.draw(self.arrow, WIDTH/2, 16-offset, 3*math.pi/2, 1, 1, 16, 16)
 	end
-
 	if self.scroll < GalleryScene.static.MAX_SCROLL then
 		love.graphics.draw(self.arrow, WIDTH/2, HEIGHT-16+offset, math.pi/2, 1, 1, 16, 16)
 	end
+
+	if self.day > 1 then
+		love.graphics.draw(self.arrow, 16+offset, HEIGHT/2, math.pi, 1, 1, 16, 16)
+	end
+	if self.day < self.days then
+		love.graphics.draw(self.arrow, WIDTH-16-offset, HEIGHT/2, 0, 1, 1, 16, 16)
+	end
+
+	love.graphics.draw(self.exit, WIDTH-32, 0)
 end
 
 return GalleryScene

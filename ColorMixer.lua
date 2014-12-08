@@ -25,7 +25,7 @@ function ColorMixer:initialize(slot, color)
 	self.tubes = Resources.static:getImage("tubes.png")
 	self.quads_tubes = {}
 	for i=1, 8 do
-		self.quads_tubes[i] = love.graphics.newQuad((i-1)*40, 0, 40, 60, 320, 60)
+		self.quads_tubes[i] = love.graphics.newQuad((i-1)*40, 0, 40, 52, 320, 60)
 	end
 end
 
