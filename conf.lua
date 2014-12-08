@@ -1,9 +1,9 @@
 function love.conf(t)
-    t.identity = "portraits"
+    t.identity = "dk.tangramgames.portraits"
     t.version = "0.9.1"
     t.console = false
 
-    t.window.title = "X Second Portraits"
+    t.window.title = "90 Second Portraits"
     t.window.icon = nil                
     t.window.width = 320*3               
     t.window.height = 240*3              

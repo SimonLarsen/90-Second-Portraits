@@ -1,6 +1,8 @@
+local Score = require("Score")
+
 local GalleryController = class("GalleryController", Entity)
 
-GalleryController.static.MAX_SCROLL = 850
+GalleryController.static.MAX_SCROLL = 770
 
 function GalleryController:initialize()
 	Entity.initialize(self)
@@ -16,6 +18,7 @@ function GalleryController:initialize()
 	self.quad_background = love.graphics.newQuad(12, 10, 120, 160, 152, 184)
 	self.cursor = Resources.static:getImage("cursor.png")
 
+	self.text_font = love.graphics.newFont("data/fonts/atari.ttf", 16)
 	self.title_font = love.graphics.newFont("data/fonts/yb.ttf", 40)
 
 	self:loadDay()
@@ -24,6 +27,12 @@ end
 function GalleryController:loadDay()
 	self.customer_order = Preferences.static:get(string.format("day_%d_customer_order", self.day))
 	self.background_order = Preferences.static:get(string.format("day_%d_background_order", self.day))
+	self.scores = Preferences.static:get(string.format("day_%d_scores", self.day))
+
+	self.money = 0
+	for i=1,5 do
+		self.money = self.money + Score.getPayment(self.scores[i].score, self.scores[i].time)
+	end
 
 	self.paintings = {}
 	for i=1,5 do
@@ -104,13 +113,16 @@ function GalleryController:gui()
 	love.graphics.setFont(self.title_font)
 	love.graphics.printf("Day "..self.day, 0, 10, WIDTH, "center")
 
-	for i=1,5 do
-		love.graphics.draw(self.canvas, 30, i*180)
-		love.graphics.draw(self.paintings[i], 30, i*180)
+	love.graphics.setFont(self.text_font)
+	love.graphics.printf("Total earnings:  $"..self.money, 0, 65, WIDTH, "center")
 
-		love.graphics.draw(self.canvas, 170, i*180)
-		love.graphics.draw(self.backgrounds[i], self.quad_background, 170, i*180)
-		love.graphics.draw(self.customers[i], self.quads_customers[i], 170, i*180)
+	for i=1,5 do
+		love.graphics.draw(self.canvas, 30, 100+(i-1)*180)
+		love.graphics.draw(self.paintings[i], 30, 100+(i-1)*180)
+
+		love.graphics.draw(self.canvas, 170, 100+(i-1)*180)
+		love.graphics.draw(self.backgrounds[i], self.quad_background, 170, 100+(i-1)*180)
+		love.graphics.draw(self.customers[i], self.quads_customers[i], 170, 100+(i-1)*180)
 	end
 
 	love.graphics.pop()

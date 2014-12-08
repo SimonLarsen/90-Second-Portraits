@@ -82,6 +82,7 @@ function GameController:next()
 		self.canvas:swap()
 		self.customer:swap()
 		self.background:swap()
+
 		Timer.add(4.0, function()
 			self:saveDay()
 			gamestate.switch(GalleryScene())
@@ -94,6 +95,8 @@ function GameController:saveDay()
 
 	Preferences.static:set(string.format("day_%d_customer_order", self.day), self.customer_order)
 	Preferences.static:set(string.format("day_%d_background_order", self.day), self.background_order)
+
+	Preferences.static:set(string.format("day_%d_scores", self.day), self.scores)
 end
 
 function GameController:calculateScore(customer, portrait)
