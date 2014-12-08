@@ -12,6 +12,12 @@ function ScorePopup:initialize(round, score)
 	self.title_font = love.graphics.newFont("data/fonts/yb.ttf", 24)
 	self.text_font = love.graphics.newFont("data/fonts/atari.ttf", 16)
 	self.background = Resources.static:getImage("popup.png")
+	self.grades = Resources.static:getImage("grades.png")
+
+	self.quad_grades = {}
+	for i=1,6 do
+		self.quad_grades[i] = love.graphics.newQuad((i-1)*6, 0, 6, 16, 36, 16)
+	end
 
 	self.grade = Score.getGrade(self.score.score)
 	self.timeGrade = Score.getTimeGrade(self.score.time)
@@ -39,8 +45,8 @@ function ScorePopup:gui()
 		love.graphics.print("Time", WIDTH/2-60, HEIGHT/2+10)
 		love.graphics.print("Payment", WIDTH/2-60, HEIGHT/2+40)
 
-		love.graphics.printf(self.grade, WIDTH/2-60, HEIGHT/2-20, 120, "right")
-		love.graphics.printf(self.timeGrade, WIDTH/2-60, HEIGHT/2+10, 120, "right")
+		love.graphics.draw(self.grades, self.quad_grades[self.grade], WIDTH/2+54, HEIGHT/2-19)
+		love.graphics.draw(self.grades, self.quad_grades[self.timeGrade], WIDTH/2+54, HEIGHT/2+11)
 		love.graphics.printf("$"..self.payment, WIDTH/2-60, HEIGHT/2+40, 120, "right")
 	end
 end

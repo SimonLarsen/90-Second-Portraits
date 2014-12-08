@@ -30,6 +30,8 @@ function GameController:initialize(customer_order, background_order)
 	self.canvas = nil
 	self.customer = nil
 	self.background = nil
+	self.nextEnabled = false
+	Timer.add(2, function() self.nextEnabled = true end)
 end
 
 function GameController:update(dt)
@@ -47,7 +49,7 @@ function GameController:update(dt)
 	self.quad_timer:setViewport(0, 0, barwidth, 12)
 
 	local mx, my = Mouse.static:getPosition()
-	if mx >= WIDTH-59 and my >= HEIGHT-20 then
+	if self.nextEnabled and mx >= WIDTH-59 and my >= HEIGHT-20 then
 		if Mouse.static:wasPressed("l") then
 			self:next()
 		end
@@ -60,6 +62,7 @@ function GameController:next()
 	
 	-- Write canvas to image
 	customer:encode(string.format("painting_%d_%d.png", self.day, self.round), "png")
+	portrait:encode(string.format("painting_%d_%d_reference.png", self.day, self.round), "png")
 
 	local bucketscore = ImageTools.compareBuckets(customer, portrait, 10)
 	
@@ -67,8 +70,9 @@ function GameController:next()
 	self.scene:addEntity(ScorePopup(self.round, self.scores[self.round]))
 
 	self.time = GameController.static.TIME
-
 	self.round = self.round + 1
+	self.nextEnabled = false
+	Timer.add(4, function() self.nextEnabled = true end)
 
 	if self.round <= GameController.static.ROUNDS then
 		self.canvas:swap()
@@ -98,35 +102,17 @@ function GameController:calculateScore(customer, portrait)
 	return comp
 end
 
-function GameController:getCustomerImage()
-	local canvas = love.graphics.newCanvas(120, 160)
-	canvas:clear(241, 232, 199)
-
-	local oldCanvas = love.graphics.getCanvas()
-
-	love.graphics.setCanvas(canvas)
-	love.graphics.push()
-	love.graphics.translate(-180, -10)
-
-	self.background:draw()
-	self.customer:draw()
-
-	love.graphics.pop()
-
-	love.graphics.setCanvas(oldCanvas)
-
-	return canvas:getImageData()
-end
-
 function GameController:gui()
 	if self:isActive() == false then return end
 
 	local mx, my = Mouse.static:getPosition()
 
-	if mx >= WIDTH-59 and my >= HEIGHT-20 then
-		love.graphics.draw(self.next_button, self.quads_next_hover, WIDTH-59, HEIGHT-20)
-	else
-		love.graphics.draw(self.next_button, self.quads_next, WIDTH-59, HEIGHT-20)
+	if self.nextEnabled then
+		if mx >= WIDTH-59 and my >= HEIGHT-20 then
+			love.graphics.draw(self.next_button, self.quads_next_hover, WIDTH-59, HEIGHT-20)
+		else
+			love.graphics.draw(self.next_button, self.quads_next, WIDTH-59, HEIGHT-20)
+		end
 	end
 
 	love.graphics.draw(self.timer_bar, self.quad_timer, 7, 9)
@@ -136,6 +122,27 @@ function GameController:gui()
 		love.graphics.setBlendMode("alpha")
 	end
 	love.graphics.draw(self.timer, 5, 7)
+end
+
+function GameController:getCustomerImage()
+	local canvas = love.graphics.newCanvas(120, 160)
+	canvas:clear(241, 232, 199)
+
+	local w, h = self.customer.image:getDimensions()
+
+	local quad_background = love.graphics.newQuad(12, 10, 120, 160, 152, 184)
+	local quad_customer = love.graphics.newQuad(w/2-60, h-230, 120, 160, w, h)
+
+	local oldCanvas = love.graphics.getCanvas()
+
+	love.graphics.setCanvas(canvas)
+
+	love.graphics.draw(self.background.image, quad_background, 0, 0)
+	love.graphics.draw(self.customer.image, quad_customer, 0, 0)
+
+	love.graphics.setCanvas(oldCanvas)
+
+	return canvas:getImageData()
 end
 
 return GameController
