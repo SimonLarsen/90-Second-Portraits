@@ -24,6 +24,7 @@ function Customer:update(dt)
 			self.x = 240
 			self.y = 0
 			self.state = 2
+			Sound.play("customer"..self.id..".wav")
 		end
 
 	elseif self.state == 3 then
