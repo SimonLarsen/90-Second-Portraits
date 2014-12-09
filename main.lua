@@ -45,6 +45,16 @@ function love.mousereleased(x, y, button)
 	Mouse.static:mousereleased(x, y, button)
 end
 
+function love.keypressed(k)
+	if k == "1" then updateScale(1)
+	elseif k == "2" then updateScale(2)
+	elseif k == "3" then updateScale(3)
+	elseif k == "4" then updateScale(4)
+	elseif k == "5" then updateScale(5)
+	elseif k == "6" then updateScale(6)
+	end
+end
+
 function love.run()
 	if love.math then
 		love.math.setRandomSeed(os.time())
@@ -109,4 +119,9 @@ function love.run()
 
 		if love.timer then love.timer.sleep(0.001) end
 	end
+end
+
+function updateScale(s)
+	SCALE = s
+	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
 end

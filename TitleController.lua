@@ -86,7 +86,7 @@ function TitleController:gui()
 	end
 
 	local mx, my = Mouse.static:getPosition()
-	love.graphics.draw(self.cursor, mx, my)
+	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
 end
 
 return TitleController

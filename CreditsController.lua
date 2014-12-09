@@ -94,7 +94,7 @@ function CreditsController:gui()
 
 	love.graphics.draw(self.exit, WIDTH-32, 0)
 
-	love.graphics.draw(self.cursor, mx, my)
+	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
 end
 
 return CreditsController

@@ -2,7 +2,7 @@ local Score = require("Score")
 
 local GalleryController = class("GalleryController", Entity)
 
-GalleryController.static.MAX_SCROLL = 770
+GalleryController.static.MAX_SCROLL = 850
 
 function GalleryController:initialize()
 	Entity.initialize(self)
@@ -63,11 +63,13 @@ function GalleryController:update(dt)
 		if my >= HEIGHT/2-16 and my <= HEIGHT/2+16 then
 			if mx <= 32 and self.day > 1 then
 				self.day = self.day - 1
+				self.scroll = 0
 				self:loadDay()
 				Sound.play("pageturn.wav")
 			end
 			if mx >= WIDTH-32 and self.day < self.days then
 				self.day = self.day + 1
+				self.scroll = 0
 				self:loadDay()
 				Sound.play("pageturn.wav")
 			end

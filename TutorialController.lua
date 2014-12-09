@@ -1,6 +1,6 @@
 local TutorialController = class("TutorialController", Entity)
 
-TutorialController.static.NUM_SLIDES = 7
+TutorialController.static.NUM_SLIDES = 8
 
 function TutorialController:initialize(goToGame)
 	Entity.initialize(self)
@@ -67,7 +67,7 @@ function TutorialController:gui()
 		love.graphics.draw(self.exit, WIDTH-16-offset, HEIGHT-16, 0, 1, 1, 16, 16)
 	end
 
-	love.graphics.draw(self.cursor, mx, my)
+	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
 end
 
 return TutorialController

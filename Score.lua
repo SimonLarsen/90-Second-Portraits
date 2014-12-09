@@ -17,13 +17,13 @@ function Score.getGrade(score)
 end
 
 function Score.getTimeGrade(time)
-	if time > 40 then
+	if time > 30 then
 		return 1
-	elseif time > 30 then
-		return 2
 	elseif time > 15 then
-		return 3
+		return 2
 	elseif time > 5 then
+		return 3
+	elseif time > 0 then
 		return 4
 	else
 		return 6
@@ -31,7 +31,7 @@ function Score.getTimeGrade(time)
 end
 
 function Score.getPayment(score, time)
-	local multiplier = 1 + math.cap((90 - time) / 100, 0, 0.5)
+	local multiplier = 1 + math.cap(time / 100, 0, 0.5)
 	local base = score * 10
 	return math.round(base * multiplier)
 end
