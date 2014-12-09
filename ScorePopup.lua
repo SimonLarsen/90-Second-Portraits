@@ -22,10 +22,17 @@ function ScorePopup:initialize(round, score)
 	self.grade = Score.getGrade(self.score.score)
 	self.timeGrade = Score.getTimeGrade(self.score.time)
 	self.payment = Score.getPayment(self.score.score, self.score.time)
+
+	self.soundPlayed = false
 end
 
 function ScorePopup:update(dt)
 	self.time = self.time + dt
+
+	if self.time > 1 and self.soundPlayed == false and self.payment > 0 then
+		Sound.play("kaching.wav")
+		self.soundPlayed = true
+	end
 
 	if self.time > 4
 	or (Mouse.static:wasPressed("l") and self.time > 1) then

@@ -165,6 +165,7 @@ end
 
 function Canvas:swap()
 	self.state = 3
+	Sound.play("woosh.wav")
 end
 
 function Canvas:setColor(c)
