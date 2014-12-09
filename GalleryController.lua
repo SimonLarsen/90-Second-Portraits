@@ -17,6 +17,7 @@ function GalleryController:initialize()
 	self.exit = Resources.static:getImage("exit.png")
 	self.quad_background = love.graphics.newQuad(12, 10, 120, 160, 152, 184)
 	self.cursor = Resources.static:getImage("cursor.png")
+	self.divider = Resources.static:getImage("fancydivider.png")
 
 	self.text_font = love.graphics.newFont("data/fonts/atari.ttf", 16)
 	self.title_font = love.graphics.newFont("data/fonts/yb.ttf", 40)
@@ -117,12 +118,16 @@ function GalleryController:gui()
 	love.graphics.printf("Total earnings:  $"..self.money, 0, 65, WIDTH, "center")
 
 	for i=1,5 do
-		love.graphics.draw(self.canvas, 30, 100+(i-1)*180)
-		love.graphics.draw(self.paintings[i], 30, 100+(i-1)*180)
+		love.graphics.draw(self.canvas, 30, 100+(i-1)*200)
+		love.graphics.draw(self.paintings[i], 30, 100+(i-1)*200)
 
-		love.graphics.draw(self.canvas, 170, 100+(i-1)*180)
-		love.graphics.draw(self.backgrounds[i], self.quad_background, 170, 100+(i-1)*180)
-		love.graphics.draw(self.customers[i], self.quads_customers[i], 170, 100+(i-1)*180)
+		love.graphics.draw(self.canvas, 170, 100+(i-1)*200)
+		love.graphics.draw(self.backgrounds[i], self.quad_background, 170, 100+(i-1)*200)
+		love.graphics.draw(self.customers[i], self.quads_customers[i], 170, 100+(i-1)*200)
+
+		if i < 5 then
+			love.graphics.draw(self.divider, WIDTH/2-80, 72+i*200)
+		end
 	end
 
 	love.graphics.pop()

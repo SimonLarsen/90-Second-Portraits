@@ -78,6 +78,10 @@ function Canvas:update(dt)
 				self.lastx = mx
 				self.lasty = my
 				self.brush_dir = 2
+				if self.lastx >= 0 and self.lastx < self.width
+				and self.lasty >= 0 and self.lasty < self.height then
+					Sound.play("brush.wav")
+				end
 			elseif self.tool == 3 then
 				self.lastx = mx
 				self.lasty = my
