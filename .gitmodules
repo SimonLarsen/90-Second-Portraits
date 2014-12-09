@@ -1,0 +1,6 @@
+[submodule "hump"]
+	path = hump
+	url = https://github.com/vrld/hump.git
+[submodule "middleclass"]
+	path = middleclass
+	url = https://github.com/kikito/middleclass.git
