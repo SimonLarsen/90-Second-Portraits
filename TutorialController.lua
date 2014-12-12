@@ -49,6 +49,11 @@ function TutorialController:update(dt)
 			end
 		end
 	end
+
+	if Keyboard.static:wasPressed("escape") then
+		gamestate.switch(require("TitleScene")())
+		Sound.play("pageturn.wav")
+	end
 end
 
 function TutorialController:gui()
@@ -67,7 +72,7 @@ function TutorialController:gui()
 		love.graphics.draw(self.exit, WIDTH-16-offset, HEIGHT-16, 0, 1, 1, 16, 16)
 	end
 
-	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
+	self:drawCursor(self.cursor)
 end
 
 return TutorialController

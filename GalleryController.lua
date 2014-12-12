@@ -99,6 +99,11 @@ function GalleryController:update(dt)
 		self.scroll = self.scroll + 15
 	end
 	self.scroll = math.cap(self.scroll, 0, GalleryController.static.MAX_SCROLL)
+
+	if Keyboard.static:wasPressed("escape") then
+		gamestate.switch(require("TitleScene")())
+		Sound.play("pageturn.wav")
+	end
 end
 
 function GalleryController:gui()
@@ -150,7 +155,7 @@ function GalleryController:gui()
 
 	love.graphics.draw(self.exit, WIDTH-32, 0)
 
-	love.graphics.draw(self.cursor, mx, my)
+	self:drawCursor(self.cursor)
 end
 
 

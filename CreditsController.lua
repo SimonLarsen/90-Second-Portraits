@@ -20,6 +20,8 @@ Licensed under Creative Commons
 By Attribution 3.0
 creativecommons.org/licenses/by/3.0/
 
+
+
 Thanks for playing!]]
 
 function CreditsController:initialize()
@@ -39,11 +41,10 @@ function CreditsController:update(dt)
 	self.time = self.time + dt
 	local mx, my = Mouse.static:getPosition()
 
-	if Mouse.static:wasPressed("l") then
-		if mx >= WIDTH-32 and my <= 32 then
-			gamestate.switch(require("TitleScene")())
-			Sound.play("pageturn.wav")
-		end
+	if Keyboard.static:wasPressed("escape")
+	or (Mouse.static:wasPressed("l") and mx >= WIDTH-32 and my <= 32) then
+		gamestate.switch(require("TitleScene")())
+		Sound.play("pageturn.wav")
 	end
 
 	-- Scroll buttons
@@ -63,7 +64,7 @@ function CreditsController:update(dt)
 	if Mouse.static:wasPressed("wd") then
 		self.scroll = self.scroll + 15
 	end
-	self.scroll = math.cap(self.scroll, 0, 400)
+	self.scroll = math.cap(self.scroll, 0, 300)
 end
 
 function CreditsController:gui()
@@ -94,7 +95,7 @@ function CreditsController:gui()
 
 	love.graphics.draw(self.exit, WIDTH-32, 0)
 
-	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
+	self:drawCursor(self.cursor)
 end
 
 return CreditsController

@@ -16,6 +16,13 @@ function Entity:draw()
 	
 end
 
+function Entity:drawCursor(image, ox, oy, quad)
+	if IS_MOBILE == true then return end
+
+	local mx, my = Mouse.static:getPosition()
+	love.graphics.draw(image, math.floor(mx), math.floor(my), 0, 1, 1, ox or 0, oy or 0)
+end
+
 function Entity:gui()
 	
 end

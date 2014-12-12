@@ -64,6 +64,10 @@ function TitleController:update(dt)
 			end
 		end
 	end
+
+	if Keyboard.static:wasPressed("escape") then
+		love.event.quit()
+	end
 end
 
 function TitleController:gui()
@@ -85,8 +89,7 @@ function TitleController:gui()
 		end
 	end
 
-	local mx, my = Mouse.static:getPosition()
-	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
+	self:drawCursor(self.cursor)
 end
 
 return TitleController

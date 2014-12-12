@@ -135,12 +135,13 @@ function Canvas:draw()
 end
 
 function Canvas:gui()
-	if self:isActive() == false then return end
+	if self:isActive() == false or IS_MOBILE == true then return end
 
 	local mx, my = Mouse.static:getPosition()
 	if self.tool == 1 then
 		love.graphics.draw(self.brush_small._image, self.brush_small._quads[self.brush_dir], mx, my, 0, 1, 1, 9, 2)
 		love.graphics.setColor(self.color)
+
 		love.graphics.draw(self.brush_small_tips._image, self.brush_small_tips._quads[self.brush_dir], mx, my, 0, 1, 1, 9, 2)
 
 	elseif self.tool == 2 then

@@ -40,10 +40,10 @@ function Toolbox:gui()
 	love.graphics.draw(self.image_back, self.x, self.y)
 
 	for i=1, 3 do
-		if self.hover == i then
+		if self.hover == i or self.tool == i then
 			love.graphics.draw(self.image_tools, self.quads_tools[i], self.x+(i-1)*40, self.y-30)
 		else
-			love.graphics.draw(self.image_tools, self.quads_tools[i], self.x+(i-1)*40, self.y-24)
+			love.graphics.draw(self.image_tools, self.quads_tools[i], self.x+(i-1)*40, self.y-20)
 		end
 	end
 

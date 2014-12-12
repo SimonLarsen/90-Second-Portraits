@@ -160,7 +160,7 @@ function ColorMixer:gui()
 	love.graphics.draw(self.reset_button, 115, 215, 0, 1, 1, 16, 16)
 	love.graphics.draw(self.submit_button, 201, 202)
 
-	love.graphics.draw(self.cursor, math.floor(mx), math.floor(my))
+	self:drawCursor(self.cursor)
 end
 
 function ColorMixer:getSlot()

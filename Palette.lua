@@ -14,11 +14,13 @@ function Palette:initialize(x, y)
 		{224, 54, 54}
 	}
 
+	self.selection = 1
 	self.state = 1
 
 	self.image_base = Resources.static:getImage("palette.png")
 	self.image_mix = Resources.static:getImage("mix_button.png")
 	self.paint = Animation(Resources.static:getImage("paint.png"), 24, 21)
+	self.paint_highlights = Animation(Resources.static:getImage("paint_highlights.png"), 26, 21)
 
 	self.canvas = nil
 	self.toolbox = nil
@@ -28,7 +30,10 @@ end
 function Palette:update(dt)
 	local mx, my = Mouse.static:getPosition()
 
-	if self.canvas == nil then self.canvas = self.scene:findOfType("Canvas") end
+	if self.canvas == nil then
+		self.canvas = self.scene:findOfType("Canvas")
+		self.canvas:setColor(self.colors[self.selection])
+	end
 	if self.toolbox == nil then self.toolbox = self.scene:findOfType("Toolbox") end
 	if self.controller == nil then self.controller = self.scene:findOfType("GameController") end
 
@@ -41,6 +46,7 @@ function Palette:update(dt)
 			if mx >= x and mx <= x + 24
 			and my >= y and my <= y + 21 then
 				if self.state == 1 then
+					self.selection = i
 					self.canvas:setColor(self.colors[i])
 				elseif self.state == 2 then
 					self.canvas:setActive(false)
@@ -86,11 +92,19 @@ function Palette:gui()
 	end
 
 	for i=1, 4 do
-		love.graphics.setColor(self.colors[i])
 		local x = self.x + Palette.static.PAINT_POS[i][1]
 		local y = self.y + Palette.static.PAINT_POS[i][2]
+
+		love.graphics.setColor(255, 255, 255)
+		if i == self.selection then
+			love.graphics.setColor(255, 255, 255)
+			love.graphics.draw(self.paint_highlights._image, self.paint_highlights._quads[i], x-1, y)
+		end
+
+		love.graphics.setColor(self.colors[i])
 		love.graphics.draw(self.paint._image, self.paint._quads[i], x, y)
 	end
+
 	love.graphics.setColor(255, 255, 255)
 end
 

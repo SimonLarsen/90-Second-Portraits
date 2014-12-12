@@ -6,6 +6,7 @@ Resources = require("Resources")
 Preferences = require("Preferences")
 Timer = require("hump.timer")
 Mouse = require("Mouse")
+Keyboard = require("Keyboard")
 Scene = require("Scene")
 Entity = require("Entity")
 Sound = require("Sound")
@@ -13,12 +14,21 @@ Animation = require("Animation")
 
 WIDTH = 320
 HEIGHT = 240
-SCALE = 3
+OFFSET_X = 0
+IS_MOBILE = false
 
 local canvas
 
 function love.load()
-	love.window.setMode(WIDTH*SCALE, HEIGHT*SCALE)
+	local winwidth, winheight = love.window.getDesktopDimensions()
+	if love.system.getOS() == "Android" then
+		updateScale(winheight / HEIGHT)
+		OFFSET_X = (winwidth - WIDTH*SCALE)/2 / SCALE
+		IS_MOBILE = true
+	else
+		updateScale(math.floor(winheight / HEIGHT))
+	end
+
 	love.mouse.setVisible(false)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setLineStyle("rough")
@@ -53,6 +63,12 @@ function love.keypressed(k)
 	elseif k == "5" then updateScale(5)
 	elseif k == "6" then updateScale(6)
 	end
+
+	Keyboard.static:keypressed(k)
+end
+
+function love.keyreleased(k)
+	Keyboard.static:keyreleased(k)
 end
 
 function love.run()
@@ -93,6 +109,7 @@ function love.run()
 		if love.update then love.update(dt) end
 
 		Mouse.static:clear()
+		Keyboard.static:clear()
 
 		if love.window and love.graphics and love.window.isCreated() then
 			love.graphics.clear()
@@ -107,10 +124,10 @@ function love.run()
 			love.graphics.pop()
 			love.graphics.push()
 
-			love.graphics.setCanvas()
 			love.graphics.scale(SCALE, SCALE)
 
-			love.graphics.draw(canvas, 0, 0)
+			love.graphics.setCanvas()
+			love.graphics.draw(canvas, OFFSET_X, 0)
 			
 			love.graphics.pop()
 

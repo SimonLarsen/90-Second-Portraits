@@ -54,6 +54,11 @@ function GameController:update(dt)
 			self:next()
 		end
 	end
+
+	if Keyboard.static:wasPressed("escape") then
+		gamestate.switch(require("TitleScene")())
+		Sound.play("pageturn.wav")
+	end
 end
 
 function GameController:next()
