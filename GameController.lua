@@ -67,7 +67,6 @@ function GameController:next()
 	
 	-- Write canvas to image
 	customer:encode(string.format("painting_%d_%d.png", self.day, self.round), "png")
-	portrait:encode(string.format("painting_%d_%d_reference.png", self.day, self.round), "png")
 
 	local bucketscore = ImageTools.compareBuckets(customer, portrait, 10)
 	

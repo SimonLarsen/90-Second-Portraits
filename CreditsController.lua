@@ -89,7 +89,7 @@ function CreditsController:gui()
 	if self.scroll > 0 then
 		love.graphics.draw(self.arrow, WIDTH/2, 16-offset, 3*math.pi/2, 1, 1, 16, 16)
 	end
-	if self.scroll < 400 then
+	if self.scroll < 300 then
 		love.graphics.draw(self.arrow, WIDTH/2, HEIGHT-16+offset, math.pi/2, 1, 1, 16, 16)
 	end
 
