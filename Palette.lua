@@ -52,6 +52,7 @@ function Palette:update(dt)
 					self.canvas:setActive(false)
 					self.toolbox:setActive(false)
 					self.colormixer = self.scene:addEntity(ColorMixer(i, self.colors[i]))
+					self.selection = i
 					self.state = 3
 				end
 			end
