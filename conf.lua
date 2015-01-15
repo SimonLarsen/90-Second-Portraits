@@ -1,5 +1,5 @@
 function love.conf(t)
-    t.identity = "dk.tangramgames.portraits"
+    t.identity = "dk.tangramgames.90secondportraits"
     t.version = "0.9.1"
     t.console = false
 

@@ -62,6 +62,7 @@ function love.keypressed(k)
 	elseif k == "4" then updateScale(4)
 	elseif k == "5" then updateScale(5)
 	elseif k == "6" then updateScale(6)
+	elseif k == "7" then updateScale(7)
 	end
 
 	Keyboard.static:keypressed(k)
