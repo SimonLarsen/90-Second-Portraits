@@ -37,7 +37,7 @@ function Palette:update(dt)
 	if self.toolbox == nil then self.toolbox = self.scene:findOfType("Toolbox") end
 	if self.controller == nil then self.controller = self.scene:findOfType("GameController") end
 
-	if Mouse.static:wasPressed("l") then
+	if Mouse.static:wasPressed(1) then
 		-- Colors
 		for i=1,4 do
 			local x = self.x + Palette.static.PAINT_POS[i][1]

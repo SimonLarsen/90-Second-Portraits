@@ -50,7 +50,7 @@ function GameController:update(dt)
 
 	local mx, my = Mouse.static:getPosition()
 	if self.nextEnabled and mx >= WIDTH-59 and my >= HEIGHT-20 then
-		if Mouse.static:wasPressed("l") then
+		if Mouse.static:wasPressed(1) then
 			self:next()
 		end
 	end
@@ -66,7 +66,7 @@ function GameController:next()
 	local portrait = self:getCustomerImage()
 	
 	-- Write canvas to image
-	customer:encode(string.format("painting_%d_%d.png", self.day, self.round), "png")
+	customer:encode("png", string.format("painting_%d_%d.png", self.day, self.round))
 
 	local bucketscore = ImageTools.compareBuckets(customer, portrait, 10)
 	
@@ -124,7 +124,7 @@ function GameController:gui()
 
 	love.graphics.draw(self.timer_bar, self.quad_timer, 7, 9)
 	if self.time < 15 and (self.time % 0.5) < 0.25 then
-		love.graphics.setBlendMode("additive")
+		love.graphics.setBlendMode("add")
 		love.graphics.draw(self.timer_bar, self.quad_timer, 7, 9)
 		love.graphics.setBlendMode("alpha")
 	end
@@ -133,7 +133,10 @@ end
 
 function GameController:getCustomerImage()
 	local canvas = love.graphics.newCanvas(120, 160)
-	canvas:clear(241, 232, 199)
+	local c = love.graphics.getCanvas()
+	love.graphics.setCanvas(canvas)
+	love.graphics.clear(241, 232, 199, 255)
+	love.graphics.setCanvas(c)
 
 	local w, h = self.customer.image:getDimensions()
 
@@ -149,7 +152,7 @@ function GameController:getCustomerImage()
 
 	love.graphics.setCanvas(oldCanvas)
 
-	return canvas:getImageData()
+	return canvas:newImageData()
 end
 
 return GameController

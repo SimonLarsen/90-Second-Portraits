@@ -59,7 +59,7 @@ function GalleryController:update(dt)
 
 	local mx, my = Mouse.static:getPosition()
 
-	if Mouse.static:wasPressed("l") then
+	if Mouse.static:wasPressed(1) then
 		if my >= HEIGHT/2-16 and my <= HEIGHT/2+16 then
 			if mx <= 32 and self.day > 1 then
 				self.day = self.day - 1
@@ -82,7 +82,7 @@ function GalleryController:update(dt)
 	end
 
 	-- Scroll buttons
-	if Mouse.static:isDown("l") then
+	if Mouse.static:isDown(1) then
 		if mx >= WIDTH/2-16 and mx <= WIDTH/2+16 then
 			if my >= HEIGHT-32 and my <= HEIGHT then
 				self.scroll = self.scroll + dt*200

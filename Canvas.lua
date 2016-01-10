@@ -37,7 +37,10 @@ function Canvas:reset()
 	self.rotation = 0
 	self.state = 1
 
-	self.canvas:clear(241, 232, 199)
+	local c = love.graphics.getCanvas()
+	love.graphics.setCanvas(self.canvas)
+	love.graphics.clear(241, 232, 199, 255)
+	love.graphics.setCanvas(c)
 end
 
 function Canvas:update(dt)
@@ -73,7 +76,7 @@ function Canvas:update(dt)
 		love.graphics.setCanvas(self.canvas)
 		love.graphics.setColor(self.color)
 
-		if Mouse.static:wasPressed("l") then
+		if Mouse.static:wasPressed(1) then
 			if self.tool == 1 or self.tool == 2 then
 				self.lastx = mx
 				self.lasty = my
@@ -89,7 +92,7 @@ function Canvas:update(dt)
 			end
 		end
 
-		if Mouse.static:wasReleased("l") and self.tool == 3 and self.lastx then
+		if Mouse.static:wasReleased(1) and self.tool == 3 and self.lastx then
 			if self.lastx >= 0 and self.lastx < self.width
 			and self.lasty >= 0 and self.lasty < self.height then
 				local radius = math.abs(my - self.lasty)
@@ -100,7 +103,7 @@ function Canvas:update(dt)
 			end
 		end
 
-		if Mouse.static:isDown("l") then
+		if Mouse.static:isDown(1) then
 			if self.tool == 1 or self.tool == 2 and self.lastx then
 				local size = Canvas.static.BRUSH[self.tool].size
 				love.graphics.setLineWidth(size)
@@ -178,7 +181,7 @@ function Canvas:setTool(t)
 end
 
 function Canvas:getImageData()
-	return self.canvas:getImageData()
+	return self.canvas:newImageData()
 end
 
 return Canvas

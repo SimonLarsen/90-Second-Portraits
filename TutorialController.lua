@@ -37,7 +37,7 @@ function TutorialController:update(dt)
 	self.time = self.time + dt
 	local mx, my = Mouse.static:getPosition()
 
-	if Mouse.static:wasPressed("l") then
+	if Mouse.static:wasPressed(1) then
 		if my >= HEIGHT-32 then
 			if mx <= 32 and self.slide > 1 then
 				self:previous()

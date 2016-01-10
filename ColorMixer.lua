@@ -81,14 +81,14 @@ function ColorMixer:update(dt)
 
 		if mx >= 99 and mx <= 131
 		and my >= 199 and my <= 231 then
-			if Mouse.static:wasPressed("l") then
+			if Mouse.static:wasPressed(1) then
 				self:reset()
 			end
 		end
 
 		if mx >= x and mx <= x+40
 		and my >= y and my <= y+64 then
-			if Mouse.static:wasPressed("l") then
+			if Mouse.static:wasPressed(1) then
 				if i <= 2 then
 					self:updateColor(ColorMixer.static.COLORS[i], false)
 				else

@@ -42,13 +42,13 @@ function CreditsController:update(dt)
 	local mx, my = Mouse.static:getPosition()
 
 	if Keyboard.static:wasPressed("escape")
-	or (Mouse.static:wasPressed("l") and mx >= WIDTH-32 and my <= 32) then
+	or (Mouse.static:wasPressed(1) and mx >= WIDTH-32 and my <= 32) then
 		gamestate.switch(require("TitleScene")())
 		Sound.play("pageturn.wav")
 	end
 
 	-- Scroll buttons
-	if Mouse.static:isDown("l") then
+	if Mouse.static:isDown(1) then
 		if mx >= WIDTH/2-16 and mx <= WIDTH/2+16 then
 			if my >= HEIGHT-32 and my <= HEIGHT then
 				self.scroll = self.scroll + dt*200

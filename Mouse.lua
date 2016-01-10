@@ -31,6 +31,14 @@ function Mouse.static:mousereleased(x, y, button)
 	Mouse.static.released[button] = true
 end
 
+function Mouse.static:wheelmoved(x, y)
+	if y > 0 then
+		Mouse.static.pressed["wu"] = true
+	elseif y < 0 then
+		Mouse.static.pressed["wd"] = true
+	end
+end
+
 function Mouse.static:clear()
 	for i,v in pairs(Mouse.static.pressed) do
 		Mouse.static.pressed[i] = false

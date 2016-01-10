@@ -39,7 +39,7 @@ function TitleController:update(dt)
 		and my >= 20+i*28 and my <= 47+i*28 and self.active[i] then
 			self.offsets[i] = math.min(10, self.offsets[i] + 80*dt)
 
-			if Mouse.static:wasPressed("l") then
+			if Mouse.static:wasPressed(1) then
 				if i == 1 then
 					local tutorialCompleted = Preferences.static:get("tutorialCompleted")
 					if tutorialCompleted then

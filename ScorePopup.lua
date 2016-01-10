@@ -35,7 +35,7 @@ function ScorePopup:update(dt)
 	end
 
 	if self.time > 4
-	or (Mouse.static:wasPressed("l") and self.time > 1) then
+	or (Mouse.static:wasPressed(1) and self.time > 1) then
 		self:kill()
 	end
 end

@@ -55,6 +55,10 @@ function love.mousereleased(x, y, button)
 	Mouse.static:mousereleased(x, y, button)
 end
 
+function love.wheelmoved(x, y)
+	Mouse.static:wheelmoved(x, y)
+end
+
 function love.keypressed(k)
 	if k == "1" then updateScale(1)
 	elseif k == "2" then updateScale(2)

@@ -29,7 +29,7 @@ function Toolbox:update(dt)
 	if mx >= self.x and mx <= self.x+120
 	and my >= self.y-20 and my <= self.y+18 then
 		self.hover = math.floor((mx - self.x) / 40) + 1
-		if Mouse.static:wasPressed("l") then
+		if Mouse.static:wasPressed(1) then
 			self.tool = self.hover
 			self.canvas:setTool(self.tool)
 		end
