@@ -135,7 +135,7 @@ function GameController:getCustomerImage()
 	local canvas = love.graphics.newCanvas(120, 160)
 	local c = love.graphics.getCanvas()
 	love.graphics.setCanvas(canvas)
-	love.graphics.clear(241, 232, 199, 255)
+	love.graphics.clear(0.945, 0.910, 0.780, 1)
 	love.graphics.setCanvas(c)
 
 	local w, h = self.customer.image:getDimensions()

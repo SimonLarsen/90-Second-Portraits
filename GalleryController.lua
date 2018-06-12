@@ -111,9 +111,9 @@ function GalleryController:gui()
 
 	local offset = math.cos(self.time*10)*2
 
-	love.graphics.setColor(53, 30, 24)
+	love.graphics.setColor(0.208, 0.118, 0.094)
 	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(1, 1, 1, 1)
 
 	love.graphics.push()
 	love.graphics.translate(0, -self.scroll)

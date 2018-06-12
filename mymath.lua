@@ -17,7 +17,7 @@ function math.gauss()
 end
 
 function math.rgbtohsv(r, g, b, a)
-  r, g, b, a = r / 255, g / 255, b / 255, a / 255
+  r, g, b, a = r, g, b, a
   local max, min = math.max(r, g, b), math.min(r, g, b)
   local h, s, v
   v = max
@@ -58,7 +58,7 @@ function math.hsvtorgb(h, s, v, a)
   elseif i == 5 then r, g, b = v, p, q
   end
 
-  return r * 255, g * 255, b * 255, a * 255
+  return r, g, b, a
 end
 
 function math.huemid(a, b)
@@ -91,9 +91,6 @@ function math.subset(t, n)
 end
 
 function math.rgbtoyuv(r, g, b)
-	r = r / 255
-	g = g / 255
-	b = b / 255
 
 	local y = 0.299 * r + 0.587 * g + 0.114 * b
 	local u = 0.492 * (b - y)
@@ -104,8 +101,8 @@ end
 
 function math.rgbdistance(r1, g1, b1, r2, g2, b2)
 	local rmean = (r1 + r2) / 2
-	local r = r1 - r2
-	local g = g1 - g2
-	local b = b1 - b2
-	return math.sqrt((2 + rmean/256) * r^2 + 4*g^2 + (2 + (255 - rmean)/256)*b^2)
+	local r = r1*255 - r2*255
+	local g = g1*255 - g2*255
+	local b = b1*255 - b2*255
+	return math.sqrt((2 + rmean) * r^2 + 4*g^2 + (2 + (1 - rmean))*b^2)
 end

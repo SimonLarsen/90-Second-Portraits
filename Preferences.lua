@@ -6,7 +6,7 @@ Preferences.static.path = "preferences"
 
 function Preferences.static:load()
 	self.data = {}
-	if love.filesystem.exists(self.path) == false then
+	if love.filesystem.getInfo(self.path) == nil then
 		print("Preference file \"".. self.path .. "\" not found")
 		return
 	end

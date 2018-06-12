@@ -8,10 +8,10 @@ function Palette:initialize(x, y)
 	Entity.initialize(self, x, y, 2)
 
 	self.colors = {
-		{255, 255, 255},
-		{48, 213, 48},
-		{63, 127, 193},
-		{224, 54, 54}
+		{1, 1, 1},
+		{48/255, 213/255, 48/255},
+		{63/255, 127/255, 193/255},
+		{224/255, 54/255, 54/255}
 	}
 
 	self.selection = 1
@@ -88,7 +88,7 @@ function Palette:gui()
 	love.graphics.draw(self.image_mix, self.x+35, self.y+20)
 
 	if self.state == 2 then
-		love.graphics.setColor(0, 0, 0, 200)
+		love.graphics.setColor(0, 0, 0, 0.784)
 		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	end
 
@@ -96,9 +96,9 @@ function Palette:gui()
 		local x = self.x + Palette.static.PAINT_POS[i][1]
 		local y = self.y + Palette.static.PAINT_POS[i][2]
 
-		love.graphics.setColor(255, 255, 255)
+		love.graphics.setColor(1, 1, 1)
 		if i == self.selection then
-			love.graphics.setColor(255, 255, 255)
+			love.graphics.setColor(1, 1, 1)
 			love.graphics.draw(self.paint_highlights._image, self.paint_highlights._quads[i], x-1, y)
 		end
 
@@ -106,7 +106,7 @@ function Palette:gui()
 		love.graphics.draw(self.paint._image, self.paint._quads[i], x, y)
 	end
 
-	love.graphics.setColor(255, 255, 255)
+	love.graphics.setColor(1, 1, 1)
 end
 
 return Palette
