@@ -1,10 +1,10 @@
 local ColorMixer = class("ColorMixer", Entity)
 
 ColorMixer.static.COLORS = {
-	{ 255, 255, 255 }, { 0, 0, 0 },
-	{ 192,0,0 }, { 255,160,0 },
-	{ 255,255,0 }, { 0,128,0 },
-	{ 0,0,192 }, { 128,0,128 }
+	{ 1, 1, 1 }, { 0, 0, 0 },
+	{ 0.75,0,0 }, { 1,0.625,0 },
+	{ 1,1,0 }, { 0,0.5,0 },
+	{ 0,0,0.75 }, { 0.5,0,0.5 }
 }
 
 function ColorMixer:initialize(slot, color)
@@ -13,7 +13,7 @@ function ColorMixer:initialize(slot, color)
 	self.slot = slot
 	self:reset()
 
-	local h, s, v = math.rgbtohsv(color[1], color[2], color[3], 255)
+	local h, s, v = math.rgbtohsv(color[1], color[2], color[3], 1)
 	local hasHue = false
 	if s > 0 then hasHue = true end
 	self:updateColor(color, hasHue)
@@ -47,8 +47,8 @@ function ColorMixer:updateColor(color, hasHue)
 		return
 	end
 
-	local oh, os, ov = math.rgbtohsv(self.mycolor[1], self.mycolor[2], self.mycolor[3], 255)
-	local nh, ns, nv = math.rgbtohsv(color[1], color[2], color[3], 255)
+	local oh, os, ov = math.rgbtohsv(self.mycolor[1], self.mycolor[2], self.mycolor[3], 1)
+	local nh, ns, nv = math.rgbtohsv(color[1], color[2], color[3], 1)
 
 	local h, s, v
 	if self.hasHue and hasHue then
@@ -63,7 +63,7 @@ function ColorMixer:updateColor(color, hasHue)
 	s = (2*os + ns) / 3
 	v = (2*ov + nv) / 3
 
-	local r, g, b = math.hsvtorgb(h, s, v, 255)
+	local r, g, b = math.hsvtorgb(h, s, v, 1)
 	self.mycolor = { r, g, b }
 	self.hasHue = self.hasHue or hasHue
 end
@@ -123,13 +123,13 @@ end
 function ColorMixer:gui()
 	local mx, my = Mouse.static:getPosition()
 
-	love.graphics.setColor(0, 0, 0, 200)
+	love.graphics.setColor(0, 0, 0, 0.784)
 	love.graphics.rectangle("fill", 0, 0, 180, HEIGHT)
 	love.graphics.rectangle("fill", 300, 0, 180, HEIGHT)
 	love.graphics.rectangle("fill", 180, 0, 120, 10)
 	love.graphics.rectangle("fill", 180, 170, 120, HEIGHT-170)
 
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(1, 1, 1, 1)
 	for i=1, #ColorMixer.static.COLORS do
 		local x = (i % 4) * 40
 		local y = math.floor((i-1) / 4) * 64
@@ -155,7 +155,7 @@ function ColorMixer:gui()
 		end
 	end
 
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(1, 1, 1, 1)
 
 	love.graphics.draw(self.reset_button, 115, 215, 0, 1, 1, 16, 16)
 	love.graphics.draw(self.submit_button, 201, 202)

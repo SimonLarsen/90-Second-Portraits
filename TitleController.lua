@@ -80,12 +80,12 @@ function TitleController:gui()
 		love.graphics.print(v, 32+self.offsets[i], 22+i*28)
 
 		if self.active[i] then
-			love.graphics.setColor(255, 255, 255)
+			love.graphics.setColor(1, 1, 1)
 			love.graphics.print(v, 32+self.offsets[i], 20+i*28)
 		else
-			love.graphics.setColor(128, 128, 128)
+			love.graphics.setColor(0.5, 0.5, 0.5)
 			love.graphics.print(v, 32+self.offsets[i], 20+i*28)
-			love.graphics.setColor(255, 255, 255)
+			love.graphics.setColor(1, 1, 1)
 		end
 	end
 

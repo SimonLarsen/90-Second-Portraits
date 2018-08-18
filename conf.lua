@@ -1,6 +1,6 @@
 function love.conf(t)
     t.identity = "dk.tangramgames.90secondportraits"
-    t.version = "0.10.0"
+    t.version = "11.0"
     t.console = false
     t.accelerometerjoystick = false
     t.gammacorrect = false

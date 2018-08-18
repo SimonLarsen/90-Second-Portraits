@@ -20,9 +20,9 @@ function ImageTools.histogram(data, steps)
 	for iy = 0, h-1 do
 		for ix = 0, w-1 do
 			local r, g, b = data:getPixel(ix, iy)
-			local ir = math.floor(r / 256 * steps)
-			local ig = math.floor(g / 256 * steps)
-			local ib = math.floor(b / 256 * steps)
+			local ir = math.floor(r * steps)
+			local ig = math.floor(g * steps)
+			local ib = math.floor(b * steps)
 			hist[ir][ig][ib] = hist[ir][ig][ib] + 1
 		end
 	end

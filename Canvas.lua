@@ -11,7 +11,7 @@ function Canvas:initialize()
 
 	self.tool = 2
 	self.brush_dir = 1
-	self.color = { 224, 24, 24, 255 }
+	self.color = { 0.878, 0.094, 0.094, 1 }
 	self.width = 120
 	self.height =  160
 
@@ -39,7 +39,7 @@ function Canvas:reset()
 
 	local c = love.graphics.getCanvas()
 	love.graphics.setCanvas(self.canvas)
-	love.graphics.clear(241, 232, 199, 255)
+	love.graphics.clear(0.945, 0.910, 0.780, 1)
 	love.graphics.setCanvas(c)
 end
 
@@ -117,7 +117,7 @@ function Canvas:update(dt)
 			self.brush_dir = 1
 		end
 
-		love.graphics.setColor(255, 255, 255, 255)
+		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.setCanvas(oldCanvas)
 	end
 
@@ -164,7 +164,7 @@ function Canvas:gui()
 		end
 	end
 
-	love.graphics.setColor(255, 255, 255)
+	love.graphics.setColor(1, 1, 1)
 end
 
 function Canvas:swap()

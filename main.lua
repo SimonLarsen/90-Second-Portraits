@@ -116,7 +116,7 @@ function love.run()
 		Mouse.static:clear()
 		Keyboard.static:clear()
 
-		if love.window and love.graphics and love.window.isCreated() then
+		if love.window and love.graphics and love.window.isOpen() then
 			love.graphics.clear()
 			love.graphics.origin()
 			love.graphics.push()

@@ -12,7 +12,7 @@ function Sound.music(name)
 	if music ~= nil then
 		music:stop()
 	end
-	music = love.audio.newSource("data/music/" .. name)
+	music = love.audio.newSource("data/music/" .. name, "stream")
 	music:setVolume(0.5)
 	music:setLooping(true)
 	love.audio.play(music)
